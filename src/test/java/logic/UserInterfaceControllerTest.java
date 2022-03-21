@@ -1,4 +1,4 @@
-package controller;
+package logic;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,20 +41,20 @@ class UserInterfaceControllerTest {
 
     @Test
     public void userInterfaceGetStrategyTest1() {
-        userInterfaceController.userInterfaceGetStrategy();
+        userInterfaceController.getUserDecision();
         final String testString = "1";
         provideInput(testString);
 
-        assertEquals(1, userInterfaceController.userInterfaceGetStrategy());
+        assertEquals(1, userInterfaceController.getUserDecision());
     }
 
     @Test
     public void userInterfaceGetStrategyTest2() {
-        userInterfaceController.userInterfaceGetStrategy();
+        userInterfaceController.getUserDecision();
         final String testString = "2";
         provideInput(testString);
 
-        assertEquals(2, userInterfaceController.userInterfaceGetStrategy());
+        assertEquals(2, userInterfaceController.getUserDecision());
     }
 
     @Test
@@ -62,7 +62,7 @@ class UserInterfaceControllerTest {
         final String testString = "3";
         provideInput(testString);
 
-        assertEquals(0, userInterfaceController.userInterfaceGetStrategy());
+        assertEquals(0, userInterfaceController.getUserDecision());
     }
 
 }

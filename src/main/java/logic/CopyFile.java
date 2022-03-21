@@ -1,3 +1,7 @@
+package logic;
+
+import logic.FileStrategy;
+
 import java.io.File;
 
 public class CopyFile implements FileStrategy {

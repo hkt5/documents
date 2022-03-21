@@ -1,28 +1,24 @@
-import controller.ConsoleController;
-import controller.UserInterfaceController;
-import model.UserOptions;
-import java.io.File;
-import java.util.Scanner;
+import logic.*;
+import data.UserOptions;
 
 public class ExecutableDocuments {
 
-    private ConsoleController consoleController;
+    private static final int argsLengthIsZero = 0;
+    private static final int userDoNotUseConsole = 0;
+    private static final int userOptionIsCopyFile = 1;
+    private static final int userOptionIsReadFile = 2;
 
     public static void main(String[] args)  {
         UserOptions userOptions = new UserOptions();
         UserInterfaceController userInterfaceController = new UserInterfaceController();
+        ProgramArgumentsController programArgumentsController = new ProgramArgumentsController();
         FileStrategy fileStrategy = null;
-        if (args.length > 0) {
-            if (ConsoleController.readConsole(args) != 2) userOptions.setStrategy(ConsoleController.readConsole(args));
+        if (args.length > argsLengthIsZero) {
+            if (programArgumentsController.readProgramArguments(args) != userDoNotUseConsole) userOptions.setStrategy(programArgumentsController.readProgramArguments(args));
         } else {
-            int numberChosenByUser;
-            do {
-                numberChosenByUser= userInterfaceController.userInterfaceGetStrategy();
-                System.out.println("Bad choice! You can only choose 1 or 2");
-            } while (numberChosenByUser == 0);
-            userOptions.setStrategy(numberChosenByUser);
+            userOptions.setStrategy(userInterfaceController.getUserDecision());
         }
-        if (userOptions.getStrategy() == 1) fileStrategy = new CopyFile();
-        if (userOptions.getStrategy() == 2) fileStrategy = new ReadFile();
+        if (userOptions.getStrategy() == userOptionIsCopyFile) fileStrategy = new CopyFile();
+        if (userOptions.getStrategy() == userOptionIsReadFile) fileStrategy = new ReadFile();
     }
 }

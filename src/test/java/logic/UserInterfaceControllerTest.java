@@ -1,66 +1,42 @@
 package logic;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserInterfaceControllerTest {
 
     private UserInterfaceController userInterfaceController;
-    private final InputStream systemIn = System.in;
-    private final PrintStream systemOut = System.out;
-
-    private ByteArrayInputStream testIn;
-    private ByteArrayOutputStream testOut;
 
     @BeforeEach
     public void setUp() {
         userInterfaceController = new UserInterfaceController();
-        testOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(testOut));
-    }
-
-    private void provideInput(String data) {
-        testIn = new ByteArrayInputStream(data.getBytes());
-        System.setIn(testIn);
-    }
-
-    private String getOutput() {
-        return testOut.toString();
-    }
-
-    @AfterEach
-    public void restoreSystemInputOutput() {
-        System.setIn(systemIn);
-        System.setOut(systemOut);
     }
 
     @Test
     public void userInterfaceGetStrategyTest1() {
-        userInterfaceController.getUserDecision();
-        final String testString = "1";
-        provideInput(testString);
+        String input = "1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
 
         assertEquals(1, userInterfaceController.getUserDecision());
     }
 
     @Test
     public void userInterfaceGetStrategyTest2() {
-        userInterfaceController.getUserDecision();
-        final String testString = "2";
-        provideInput(testString);
+        String input = "2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
 
         assertEquals(2, userInterfaceController.getUserDecision());
     }
 
     @Test
     public void userInterfaceGetStrategyTest3() {
-        final String testString = "3";
-        provideInput(testString);
+        String input = "3";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
 
         assertEquals(0, userInterfaceController.getUserDecision());
     }

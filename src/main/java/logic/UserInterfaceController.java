@@ -6,18 +6,18 @@ import java.util.Scanner;
 
 public class UserInterfaceController {
 
-    private static final int userOptionIsCopyFile = 1;
-    private static final int userOptionIsReadFile = 2;
+    private static final int USER_OPTION_IS_COPY_FILE = 1;
+    private static final int USER_OPTION_IS_READ_FILE = 2;
 
     public int getUserDecision() {
         UserInterface.showInterface();
         Scanner scanner = new Scanner(System.in);
-        int selectionOfUserOptionsIsOneOrTwo;
-        do {
+        int selectionOfUserOptions = scanner.nextInt();
+        while (selectionOfUserOptions != USER_OPTION_IS_COPY_FILE && selectionOfUserOptions != USER_OPTION_IS_READ_FILE) {
             UserInterface.showMessageAfterBadChoose();
-            selectionOfUserOptionsIsOneOrTwo = scanner.nextInt();
-        } while (selectionOfUserOptionsIsOneOrTwo != userOptionIsCopyFile && selectionOfUserOptionsIsOneOrTwo != userOptionIsReadFile);
+            selectionOfUserOptions = scanner.nextInt();
+        }
         scanner.close();
-        return selectionOfUserOptionsIsOneOrTwo;
+        return selectionOfUserOptions;
     }
 }

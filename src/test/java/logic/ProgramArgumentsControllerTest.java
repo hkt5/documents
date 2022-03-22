@@ -18,20 +18,20 @@ class ProgramArgumentsControllerTest {
     @BeforeEach
     void setUp() {
         programArgumentsController = new ProgramArgumentsController();
-        readArrayString = new String[]{"-read"};
-        shortReadArrayString = new String[]{"-r"};
         copyArrayString = new String[]{"-copy"};
         shortCopyArrayString = new String[]{"-c"};
+        readArrayString = new String[]{"-read"};
+        shortReadArrayString = new String[]{"-r"};
         wrongArrayString = new String[]{"dsdfsf"};
     }
 
     @Test
     @DisplayName("Argument console checking")
     void testReadProgramArguments() {
-        assertEquals(1, programArgumentsController.readProgramArguments(copyArrayString), "Parametr -copy should return 1");
-        assertEquals(1, programArgumentsController.readProgramArguments(shortCopyArrayString), "Parametr -c should return 1");
-        assertEquals(2, programArgumentsController.readProgramArguments(readArrayString), "Parametr -read should return 2");
-        assertEquals(2, programArgumentsController.readProgramArguments(shortReadArrayString), "Parametr -r should return 2");
-        assertEquals(0, programArgumentsController.readProgramArguments(wrongArrayString), "Wrong parametr should return 0");
+        assertEquals(1, programArgumentsController.readProgramArguments(copyArrayString), "Parameter -copy should return 1");
+        assertEquals(1, programArgumentsController.readProgramArguments(shortCopyArrayString), "Parameter -c should return 1");
+        assertEquals(2, programArgumentsController.readProgramArguments(readArrayString), "Parameter -read should return 2");
+        assertEquals(2, programArgumentsController.readProgramArguments(shortReadArrayString), "Parameter -r should return 2");
+        assertEquals(0, programArgumentsController.readProgramArguments(wrongArrayString), "Wrong parameter should return 0");
     }
 }

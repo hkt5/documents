@@ -1,19 +1,16 @@
 import logic.*;
 import data.UserOptions;
 
-import javax.inject.Inject;
-
 public class ExecutableDocuments {
 
     private static final int ARGS_IS_EMPTY = 0;
     private static final int USER_DO_NOT_USE_CONSOLE = 0;
     private static final int USER_OPTION_IS_COPY_FILE = 1;
     private static final int USER_OPTION_IS_READ_FILE = 2;
-
-    @Inject private UserInterfaceController userInterfaceController;
-    @Inject private UserOptions userOptions;
-    @Inject private ProgramArgumentsController programArgumentsController;
+    private UserInterfaceController userInterfaceController =new UserInterfaceController();
+    private ProgramArgumentsController programArgumentsController = new ProgramArgumentsController();
     private FileStrategy fileStrategy = null;
+    private UserOptions userOptions = new UserOptions();
 
     public static void main(String[] args)  {
         ExecutableDocuments executableDocuments = new ExecutableDocuments();

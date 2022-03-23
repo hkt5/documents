@@ -1,0 +1,2 @@
+welcome-message: What do you want to do?\n1. Copy File\n2. Compare File
+bad-choose: Bad choice! You can only choose 1 or 2

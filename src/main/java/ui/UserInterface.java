@@ -17,7 +17,7 @@ public class UserInterface implements Messageble{
             Yaml yaml = new Yaml();
             messages = yaml.load(inputStream);
         } catch (Exception e) {
-            getMessage("bad-file");
+            System.out.println("Failed to load the file messages.yml");
         }
     }
 

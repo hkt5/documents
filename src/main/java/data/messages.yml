@@ -3,4 +3,3 @@ welcome-message: |+
   1. Copy File
   2. Compare File
 bad-choose: Bad choice! You can only choose 1 or 2
-bad-file: Failed to load the file messages.yml

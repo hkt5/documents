@@ -1,6 +1,8 @@
 import logic.*;
 import data.UserOptions;
 
+import javax.inject.Inject;
+
 public class ExecutableDocuments {
 
     private static final int ARGS_IS_EMPTY = 0;
@@ -8,11 +10,17 @@ public class ExecutableDocuments {
     private static final int USER_OPTION_IS_COPY_FILE = 1;
     private static final int USER_OPTION_IS_READ_FILE = 2;
 
+    @Inject private UserInterfaceController userInterfaceController;
+    @Inject private UserOptions userOptions;
+    @Inject private ProgramArgumentsController programArgumentsController;
+    private FileStrategy fileStrategy = null;
+
     public static void main(String[] args)  {
-        UserOptions userOptions = new UserOptions();
-        UserInterfaceController userInterfaceController = new UserInterfaceController();
-        ProgramArgumentsController programArgumentsController = new ProgramArgumentsController();
-        FileStrategy fileStrategy = null;
+        ExecutableDocuments executableDocuments = new ExecutableDocuments();
+        executableDocuments.run(args);
+    }
+
+    private void run(String[] args) {
         if (args.length > ARGS_IS_EMPTY && programArgumentsController.readProgramArguments(args) != USER_DO_NOT_USE_CONSOLE) {
             userOptions.setStrategy(programArgumentsController.readProgramArguments(args));
         } else {

@@ -31,14 +31,4 @@ class UserInterfaceControllerTest {
 
         assertEquals(2, userInterfaceController.getUserDecision());
     }
-
-    @Test
-    public void userInterfaceGetStrategyTest3() {
-        String input = "3";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        assertEquals(0, userInterfaceController.getUserDecision());
-    }
-
 }

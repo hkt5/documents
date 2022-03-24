@@ -24,6 +24,6 @@ public class ExecutableDocuments {
             userOptions.setStrategy(userInterfaceController.getUserDecision());
         }
         if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) fileStrategy = new CopyFile();
-        if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
+        else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
     }
 }

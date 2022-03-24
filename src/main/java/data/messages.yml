@@ -3,3 +3,5 @@ welcome-message: |+
   1. Copy File
   2. Compare File
 bad-choose: Bad choice! You can only choose 1 or 2
+please-enter-the-path: Please enter the path to a file or directory
+wrong-path: Wrong path to file or directory

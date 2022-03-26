@@ -5,3 +5,12 @@ welcome-message: |+
 bad-choose: Bad choice! You can only choose 1 or 2
 please-enter-the-path: Please enter the path to a file or directory
 wrong-path: Wrong path to file or directory
+added-file: >
+  File Added:
+wrong-extension: Failed to add the file. Incorrect file extension
+reader-error: An error occurred with the keyboard input
+continue: |+
+  Do you want to continue?
+  N. NEXT - Enter N letter to add another file / directory
+  E. EXIT - Enter E char to finish adding files.
+bad-choose-letter: Bad choice! You can only choose N or E

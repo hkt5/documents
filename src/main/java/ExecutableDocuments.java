@@ -1,5 +1,8 @@
+import data.FilesSafe;
 import logic.*;
 import data.UserOptions;
+
+import java.io.File;
 
 public class ExecutableDocuments {
 
@@ -25,5 +28,10 @@ public class ExecutableDocuments {
         }
         if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) fileStrategy = new CopyFile();
         else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
+
+        //for test
+        for(File files : userInterfaceController.getListOfPathFromUser()) {
+            System.out.println(files.getPath());
+        }
     }
 }

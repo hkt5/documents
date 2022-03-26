@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Files {
+public class FilesSafe {
     List<File> files;
 
-    public Files() {
+    public FilesSafe() {
         files = new ArrayList<>();
     }
 

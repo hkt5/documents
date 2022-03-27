@@ -17,11 +17,12 @@ public class KeyboardReader {
     }
 
     public String readLine() {
+        String typedUserString = "";
         try {
-            return bufferedReader.readLine();
+            typedUserString = bufferedReader.readLine();
         } catch (IOException iioException) {
             messageble.getMessage("reader-error");
         }
-        return null;
+        return typedUserString;
     }
 }

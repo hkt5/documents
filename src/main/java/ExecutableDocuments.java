@@ -1,7 +1,6 @@
-import data.FilesSafe;
+
 import logic.*;
 import data.UserOptions;
-
 import java.io.File;
 
 public class ExecutableDocuments {
@@ -31,7 +30,7 @@ public class ExecutableDocuments {
 
         //for test
         for(File files : userInterfaceController.getListOfPathFromUser()) {
-            System.out.println(files.getPath());
+            System.out.println(files.getName());
         }
     }
 }

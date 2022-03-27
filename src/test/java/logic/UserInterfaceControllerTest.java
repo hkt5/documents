@@ -16,19 +16,25 @@ class UserInterfaceControllerTest {
 
     @Test
     public void userInterfaceGetStrategyTest1() {
+        //given
         String input = "1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-
-        assertEquals(1, userInterfaceController.getUserDecision());
+        //when
+        int userStrategy = userInterfaceController.getUserDecision();
+        //then
+        assertEquals(1, userStrategy);
     }
 
     @Test
     public void userInterfaceGetStrategyTest2() {
+        //given
         String input = "2";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-
-        assertEquals(2, userInterfaceController.getUserDecision());
+        //when
+        int userStrategy = userInterfaceController.getUserDecision();
+        //then
+        assertEquals(2, userStrategy);
     }
 }

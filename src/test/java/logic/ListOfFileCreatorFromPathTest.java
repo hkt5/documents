@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -16,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ListOfFileCreatorFromPathTest {
 
     private ListOfFileCreatorFromPath listOfFileCreatorFromPath;
-    @TempDir
-    Path tempDir;
 
     @BeforeEach
     public void setup(){
@@ -26,16 +24,19 @@ class ListOfFileCreatorFromPathTest {
 
     @Test
     @DisplayName("Should return list of correct file with extension (docx, xlsx, pdf) form the path")
-    public void getListOfFileTest() {
+    public void getListOfFileTest(@TempDir Path tempDir) throws IOException {
         //given
-        File directory = new File(String.valueOf(tempDir), "test-directory/");
-        File docx = new File(String.valueOf(tempDir), "test-directory/test.docx");
-        File xlsx = new File(String.valueOf(tempDir), "test-directory/test.xlsx");
-        File pdf = new File(String.valueOf(tempDir), "test-directory/test.pdf");
-        File txt = new File(String.valueOf(tempDir), "test-directory/test.txt");
+        Path pdfFile = Files.createFile(tempDir.resolve("test.pdf"));
+        Path docxFile = Files.createFile(tempDir.resolve("test.docx"));
+        Path xlsxFile = Files.createFile(tempDir.resolve("test.xlsx"));
+        Path txtFile = Files.createFile(tempDir.resolve("test.txt"));
+        Path Directory = Files.createDirectory(tempDir.resolve("text"));
+        Path pdfFileInDirectory = Files.createFile(tempDir.resolve("text/text.pdf"));
+        Path docxFileInDirectory = Files.createFile(tempDir.resolve("text/text.docx"));
+
         //when
-        List<File> listOfFile = listOfFileCreatorFromPath.getListOfFile(directory.getPath());
+        List<File> listOfFile = listOfFileCreatorFromPath.getListOfFile(tempDir.toFile().getPath());
         //then
-        assertEquals(3, listOfFile.size());
+        assertEquals(5, listOfFile.size());
     }
 }

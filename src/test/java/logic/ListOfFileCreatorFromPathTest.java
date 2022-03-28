@@ -37,6 +37,17 @@ class ListOfFileCreatorFromPathTest {
         //when
         List<File> listOfFile = listOfFileCreatorFromPath.getListOfFile(tempDir.toFile().getPath());
         //then
-        assertEquals(5, listOfFile.size());
+        assertEquals(5, listOfFile.size(), "Should return list of 5 correct files");
+    }
+
+    @Test
+    @DisplayName("Should return empty list")
+    public void getListOfFileTest2() {
+        //given
+        String wrongPath = "C:/sdfs";
+        //when
+        List<File> listOfFile = listOfFileCreatorFromPath.getListOfFile(wrongPath);
+        //then
+        assertEquals(0, listOfFile.size(), "Should return empty list");
     }
 }

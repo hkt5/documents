@@ -12,10 +12,17 @@ public class ExecutableDocuments {
     private static final int USER_DO_NOT_USE_CONSOLE = 0;
     private static final int USER_OPTION_IS_COPY_FILE = 1;
     private static final int USER_OPTION_IS_READ_FILE = 2;
-    private UserInterfaceController userInterfaceController =new UserInterfaceController();
-    private ProgramArgumentsController programArgumentsController = new ProgramArgumentsController();
-    private FileStrategy fileStrategy = null;
-    private UserOptions userOptions = new UserOptions();
+    private UserInterfaceController userInterfaceController;
+    private ProgramArgumentsController programArgumentsController;
+    private UserOptions userOptions;
+    private FileStrategy fileStrategy;
+
+    public ExecutableDocuments() {
+        this.userInterfaceController = new UserInterfaceController();
+        this.programArgumentsController = new ProgramArgumentsController();
+        this.userOptions = new UserOptions();
+        this.fileStrategy = null;
+    }
 
     public static void main(String[] args)  {
         ExecutableDocuments executableDocuments = new ExecutableDocuments();

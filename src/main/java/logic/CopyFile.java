@@ -1,18 +1,30 @@
 package logic;
 
+import org.apache.commons.io.FileUtils;
+import ui.Messageble;
+import ui.UserInterface;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class CopyFile implements FileStrategy {
+
+    Messageble messageble;
+
+    public CopyFile() {
+        messageble = new UserInterface();
+    }
+
     @Override
-    public void perform(List<File> fileList, Path destination) throws IOException {
+    public boolean perform(List<File> fileList, File destination) {
         for (File file : fileList) {
-            Path copied = destination;
-            Files.copy(file.toPath(), copied, StandardCopyOption.REPLACE_EXISTING);
+            try {
+                FileUtils.copyFileToDirectory(file, destination);
+            } catch (IOException ioException) {
+                return false;
+            }
         }
+        return true;
     }
 }

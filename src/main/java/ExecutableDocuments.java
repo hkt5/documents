@@ -2,6 +2,9 @@
 import logic.*;
 import data.UserOptions;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ExecutableDocuments {
 
@@ -27,7 +30,12 @@ public class ExecutableDocuments {
         }
         if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) fileStrategy = new CopyFile();
         else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
+        Path path = Paths.get("C:\\Users\\WDabrowski\\Documents\\test");
+        try {
+            fileStrategy.perform(userInterfaceController.getListOfPathFromUser(), path);
+        } catch (IOException ioException) {
 
+        }
         //for test
         for(File files : userInterfaceController.getListOfPathFromUser()) {
             System.out.println(files.getName());

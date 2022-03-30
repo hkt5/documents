@@ -7,9 +7,6 @@ import ui.UserInterface;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -24,22 +21,23 @@ public class CopyFile implements FileStrategy {
 
     @Override
     public boolean perform(List<File> fileList, File destination) {
-        for (File file : fileList) {
-            try {
+        try {
+            for (File file : fileList) {
                 FileUtils.copyFileToDirectory(file, destination);
-                if (isIdentical(file.getAbsolutePath(), destination.getPath() + file.getName())) {
-                    System.out.println(file.getName() + "is identical.");
+                if (!isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName())) {
+                    return false;
                 }
-            } catch (IOException ioException) {
-                return false;
             }
+            return true;
+        } catch (IOException ioException) {
+            return false;
         }
-        return false;
     }
 
     private boolean isIdentical(String leftFile, String rightFile) {
         try {
-            return getMD5ofFile(leftFile).equals(getMD5ofFile(rightFile));
+            MessageDigest shaDigest = MessageDigest.getInstance("SHA-512");
+            return getFileChecksum(shaDigest, new File(leftFile)).equals(getFileChecksum(shaDigest, new File(rightFile)));
         } catch (IOException ioException) {
             return false;
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
@@ -47,22 +45,22 @@ public class CopyFile implements FileStrategy {
         }
     }
 
-    private String getMD5ofFile(String file) throws IOException, NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        File readFile = new File(file);
-        InputStream inputStream = new FileInputStream(readFile);
-        byte[] buffer = new byte[8192];
-        int read = 0;
-        try {
-            while ((read = inputStream.read(buffer)) > 0) {
-                digest.update(buffer, 0, read);
-            }
-            byte[] md5sum = digest.digest();
-            BigInteger bigInt = new BigInteger(1, md5sum);
-            String output = bigInt.toString(16);
-            return output;
-        } finally {
-            inputStream.close();
+    private static String getFileChecksum(MessageDigest digest, File file) throws IOException
+    {
+        FileInputStream fis = new FileInputStream(file);
+        byte[] byteArray = new byte[1024];
+        int bytesCount = 0;
+        while ((bytesCount = fis.read(byteArray)) != -1) {
+            digest.update(byteArray, 0, bytesCount);
         }
+        fis.close();
+
+        byte[] bytes = digest.digest();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < bytes.length; i++)
+        {
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
     }
 }

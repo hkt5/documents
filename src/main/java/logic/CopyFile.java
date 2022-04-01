@@ -14,9 +14,11 @@ import java.util.List;
 public class CopyFile implements FileStrategy {
 
     Messageble messageble;
+    AddMetadata addMetadata;
 
     public CopyFile() {
         messageble = new UserInterface();
+        addMetadata = new AddMetaDataToPDF();
     }
 
     @Override
@@ -27,9 +29,13 @@ public class CopyFile implements FileStrategy {
                 if (!isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName())) {
                     return false;
                 }
+                MessageDigest shaDigest = MessageDigest.getInstance("SHA-512");
+                addMetadata.addKeywordToMetaData(new File(destination.getAbsolutePath() + "/" + file.getName()), getFileChecksum(shaDigest, new File(destination.getAbsolutePath() + "/" + file.getName())));
             }
             return true;
         } catch (IOException ioException) {
+            return false;
+        } catch (NoSuchAlgorithmException e) {
             return false;
         }
     }

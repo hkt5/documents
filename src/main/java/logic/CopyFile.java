@@ -3,7 +3,6 @@ package logic;
 import org.apache.commons.io.FileUtils;
 import ui.Messageble;
 import ui.UserInterface;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,11 +13,11 @@ import java.util.List;
 public class CopyFile implements FileStrategy {
 
     Messageble messageble;
-    AddMetadata addMetadata;
+    MetaDataAddable metaDataAddable;
 
     public CopyFile() {
         messageble = new UserInterface();
-        addMetadata = new AddMetaDataToPDF();
+        metaDataAddable = new AddMetaDataToPDF();
     }
 
     @Override
@@ -29,24 +28,26 @@ public class CopyFile implements FileStrategy {
                 if (!isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName())) {
                     return false;
                 }
-                MessageDigest shaDigest = MessageDigest.getInstance("SHA-512");
-                addMetadata.addKeywordToMetaData(new File(destination.getAbsolutePath() + "/" + file.getName()), getFileChecksum(shaDigest, new File(destination.getAbsolutePath() + "/" + file.getName())));
+                String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
+                File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
+                metaDataAddable.addKeywordToMetaData(copiedFile, hashCopedFile);
             }
             return true;
-        } catch (IOException ioException) {
-            return false;
-        } catch (NoSuchAlgorithmException e) {
+        } catch (IOException | NoSuchAlgorithmException exception) {
             return false;
         }
     }
 
+    private MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
+        MessageDigest shaDigest = MessageDigest.getInstance("SHA-512");
+        return shaDigest;
+    }
+
     private boolean isIdentical(String leftFile, String rightFile) {
         try {
-            MessageDigest shaDigest = MessageDigest.getInstance("SHA-512");
-            return getFileChecksum(shaDigest, new File(leftFile)).equals(getFileChecksum(shaDigest, new File(rightFile)));
-        } catch (IOException ioException) {
-            return false;
-        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+
+            return getFileChecksum(getMessageDigest(), new File(leftFile)).equals(getFileChecksum(getMessageDigest(), new File(rightFile)));
+        } catch (IOException | NoSuchAlgorithmException exception) {
             return false;
         }
     }

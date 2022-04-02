@@ -32,7 +32,7 @@ public class CopyFile implements FileStrategy {
                 }
                 String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
                 File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
-                if (addHash(copiedFile, hashCopedFile)) {
+                if (!addHash(copiedFile, hashCopedFile)) {
                     return false;
                 }
             }
@@ -48,20 +48,21 @@ public class CopyFile implements FileStrategy {
             metaDataAddable = new AddMetaDataToPDF();
             metaDataAddable.addKeywordToMetaData(file,hash);
             return true;
-        } else if (checkIfParameterFileHasParameterExtension(file, DOCX_FILE) || checkIfParameterFileHasParameterExtension(file, XLSX_FILE)) {
-            metaDataAddable = new AddMetaDataToDocx();
+        } else if (checkIfParameterFileHasParameterExtension(file, XLSX_FILE)) {
+            metaDataAddable = new AddMetaDataToXlsx();
             metaDataAddable.addKeywordToMetaData(file,hash);
             return true;
+        } else if (checkIfParameterFileHasParameterExtension(file, DOCX_FILE)) {
+            //to do
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     private Boolean checkIfParameterFileHasParameterExtension(File file, String extension) {
         String fileName = file.toString();
         int index = fileName.lastIndexOf('.');
-        if (index > GREATER_THAN_ZERO) {
-            return false;
-        }
         String fileExtension = fileName.substring(index + 1);
         if (fileExtension.equals(extension)) {
             return Boolean.TRUE;

@@ -11,13 +11,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class CopyFile implements FileStrategy {
-
+    private final int GREATER_THAN_ZERO = 0;
+    private final String PDF_FILE = "pdf";
+    private final String DOCX_FILE = "docx";
+    private final String XLSX_FILE = "xlsx";
     Messageble messageble;
-    MetaDataAddable metaDataAddable;
+
 
     public CopyFile() {
         messageble = new UserInterface();
-        metaDataAddable = new AddMetaDataToPDF();
     }
 
     @Override
@@ -30,11 +32,41 @@ public class CopyFile implements FileStrategy {
                 }
                 String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
                 File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
-                metaDataAddable.addKeywordToMetaData(copiedFile, hashCopedFile);
+                if (addHash(copiedFile, hashCopedFile)) {
+                    return false;
+                }
             }
             return true;
         } catch (IOException | NoSuchAlgorithmException exception) {
             return false;
+        }
+    }
+
+    private boolean addHash(File file, String hash) {
+        MetaDataAddable metaDataAddable;
+        if (checkIfParameterFileHasParameterExtension(file, PDF_FILE)) {
+            metaDataAddable = new AddMetaDataToPDF();
+            metaDataAddable.addKeywordToMetaData(file,hash);
+            return true;
+        } else if (checkIfParameterFileHasParameterExtension(file, DOCX_FILE) || checkIfParameterFileHasParameterExtension(file, XLSX_FILE)) {
+            metaDataAddable = new AddMetaDataToDocx();
+            metaDataAddable.addKeywordToMetaData(file,hash);
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean checkIfParameterFileHasParameterExtension(File file, String extension) {
+        String fileName = file.toString();
+        int index = fileName.lastIndexOf('.');
+        if (index > GREATER_THAN_ZERO) {
+            return false;
+        }
+        String fileExtension = fileName.substring(index + 1);
+        if (fileExtension.equals(extension)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
         }
     }
 

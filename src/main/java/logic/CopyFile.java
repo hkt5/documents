@@ -48,12 +48,9 @@ public class CopyFile implements FileStrategy {
             metaDataAddable = new AddMetaDataToPDF();
             metaDataAddable.addKeywordToMetaData(file,hash);
             return true;
-        } else if (checkIfParameterFileHasParameterExtension(file, XLSX_FILE)) {
+        } else if (checkIfParameterFileHasParameterExtension(file, XLSX_FILE) || checkIfParameterFileHasParameterExtension(file, DOCX_FILE)) {
             metaDataAddable = new AddMetaDataToXlsx();
             metaDataAddable.addKeywordToMetaData(file,hash);
-            return true;
-        } else if (checkIfParameterFileHasParameterExtension(file, DOCX_FILE)) {
-            //to do
             return true;
         } else {
             return false;

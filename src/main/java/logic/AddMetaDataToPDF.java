@@ -15,10 +15,8 @@ public class AddMetaDataToPDF implements MetaDataAddable {
             doc.setDocumentInformation(pdd);
             doc.save(file);
             doc.close();
-            System.out.println("Dodano Hash w dpf");
             return true;
         } catch (IOException ioException) {
-            System.out.println("Nie dodano Hash w dpf");
             return false;
         }
     }

@@ -35,9 +35,11 @@ class AddMetaDataToXlsxTest {
         FileInputStream fileInputStream = new FileInputStream(xlsxFile.toFile());
         XSSFWorkbook xlsxSetMetadata = new XSSFWorkbook(fileInputStream);
         POIXMLProperties props = xlsxSetMetadata.getProperties();
-        POIXMLProperties.CoreProperties coreProp=props.getCoreProperties();
+        POIXMLProperties.CoreProperties coreProp = props.getCoreProperties();
+        String writeHash = coreProp.getKeywords();
+        xlsxSetMetadata.close();
         //then
-        assertEquals(testHash, coreProp.getKeywords());
+        assertEquals(testHash, writeHash);
     }
 
 }

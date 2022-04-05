@@ -17,7 +17,8 @@ http://maven.apache.org/maven-v4_0_0.xsd">
         <jdk.version>16</jdk.version>
         <junit.version>5.8.2</junit.version>
         <log4j.version>2.17.2</log4j.version>
-        <testSourceDirectory>src/test/java/</testSourceDirectory>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>

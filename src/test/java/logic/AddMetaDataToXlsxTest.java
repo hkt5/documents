@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,10 +39,12 @@ class AddMetaDataToXlsxTest {
         POIXMLProperties props = xlsxSetMetadata.getProperties();
         POIXMLProperties.CoreProperties coreProp = props.getCoreProperties();
         String writeHash = coreProp.getKeywords();
+        fileInputStream.close();
         xlsxSetMetadata.close();
         //then
         assertEquals(testHash, writeHash);
     }
+
 
     private void createTempXlsXFile(Path path) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();

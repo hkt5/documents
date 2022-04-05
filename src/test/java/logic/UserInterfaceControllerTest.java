@@ -17,11 +17,12 @@ class UserInterfaceControllerTest {
     @Test
     public void userInterfaceGetStrategyTest1() {
         //given
+
+        //when
+        int userStrategy = userInterfaceController.getUserDecision();
         String input = "1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        //when
-        int userStrategy = userInterfaceController.getUserDecision();
         //then
         assertEquals(1, userStrategy);
     }

@@ -1,5 +1,6 @@
 package logic;
 
+import logic.ListOfFileCreatorFromPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class ListOfFileCreatorFromPathTest {
+class TestListOfFileCreatorFromPath {
 
     private ListOfFileCreatorFromPath listOfFileCreatorFromPath;
 
@@ -24,7 +25,7 @@ class ListOfFileCreatorFromPathTest {
 
     @Test
     @DisplayName("Should return list of correct file with extension (docx, xlsx, pdf) form the path")
-    public void getListOfFileTest(@TempDir Path tempDir) throws IOException {
+    public void TestGetListOfFile(@TempDir Path tempDir) throws IOException {
         //given
         Path pdfFile = Files.createFile(tempDir.resolve("test.pdf"));
         Path docxFile = Files.createFile(tempDir.resolve("test.docx"));
@@ -42,7 +43,7 @@ class ListOfFileCreatorFromPathTest {
 
     @Test
     @DisplayName("Should return empty list")
-    public void getListOfFileTest2() {
+    public void TestGetListOfFile2() {
         //given
         String wrongPath = "C:/sdfs";
         //when

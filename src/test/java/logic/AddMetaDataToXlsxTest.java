@@ -47,7 +47,6 @@ class AddMetaDataToXlsxTest {
     private void createTempXlsXFile(Path path) throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Java Books");
-
         try (FileOutputStream outputStream = new FileOutputStream(path.toFile())) {
             workbook.write(outputStream);
         }

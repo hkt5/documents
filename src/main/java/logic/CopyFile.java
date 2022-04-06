@@ -29,11 +29,12 @@ public class CopyFile implements FileStrategy {
                 FileUtils.copyFileToDirectory(file, destination);
                 if (!isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName())) {
                     return false;
-                }
-                String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
-                File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
-                if (!addHash(copiedFile, hashCopedFile)) {
-                    return false;
+                } else {
+                    String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
+                    File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
+                    if (!addHash(copiedFile, hashCopedFile)) {
+                        return false;
+                    }
                 }
             }
             return true;

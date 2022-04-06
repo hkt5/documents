@@ -59,17 +59,20 @@ public class ListOfFileCreatorFromPath implements ListFileCreator {
         String fileName = file.toString();
         int index = fileName.lastIndexOf('.');
         if (index > GREATER_THAN_ZERO) {
-            String fileExtension = fileName.substring(index + 1);
-            switch (fileExtension) {
-                case "docx":
-                case "xlsx":
-                case "pdf":
-                    return Boolean.TRUE;
-                default:
-                    return Boolean.FALSE;
-            }
+            return compareExtension(fileName.substring(index + 1));
         }
         return Boolean.FALSE;
+    }
+
+    private Boolean compareExtension(String extension) {
+        switch (extension) {
+            case "docx":
+            case "xlsx":
+            case "pdf":
+                return Boolean.TRUE;
+            default:
+                return Boolean.FALSE;
+        }
     }
 
 

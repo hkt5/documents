@@ -27,14 +27,13 @@ public class CopyFile implements FileStrategy {
         try {
             for (File file : fileList) {
                 FileUtils.copyFileToDirectory(file, destination);
+                String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
+                File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
+
                 if (!isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName())) {
                     return false;
-                } else {
-                    String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
-                    File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
-                    if (!addHash(copiedFile, hashCopedFile)) {
-                        return false;
-                    }
+                } else if (!addHash(copiedFile, hashCopedFile)) {
+                    return false;
                 }
             }
             return true;
@@ -80,7 +79,6 @@ public class CopyFile implements FileStrategy {
 
     private boolean isIdentical(String leftFile, String rightFile) {
         try {
-
             return getFileChecksum(getMessageDigest(), new File(leftFile)).equals(getFileChecksum(getMessageDigest(), new File(rightFile)));
         } catch (IOException | NoSuchAlgorithmException exception) {
             return false;

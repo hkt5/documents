@@ -17,18 +17,24 @@ public class GetUserDecisionFromConsole implements GetDecision{
 
     @Override
     public int getUserDecision() {
-        int selectionOfUserOptions = 0;
+        int chooseNumberForUser;
         do {
             messageble.getMessage("welcome-message");
-            try {
-                selectionOfUserOptions = Integer.parseInt(keyboardReader.readLine());
-            } catch (NumberFormatException e) {
-                selectionOfUserOptions = 0;
-            }
-            if (selectionOfUserOptions != USER_OPTION_IS_COPY_FILE && selectionOfUserOptions != USER_OPTION_IS_READ_FILE)  {
+            chooseNumberForUser = getNumberFromUser();
+            if (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE)  {
                 messageble.getMessage("bad-choose");
             }
-        } while (selectionOfUserOptions != USER_OPTION_IS_COPY_FILE && selectionOfUserOptions != USER_OPTION_IS_READ_FILE);
+        } while (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE);
+        return chooseNumberForUser;
+    }
+
+    private int getNumberFromUser() {
+        int selectionOfUserOptions = 0;
+        try {
+            selectionOfUserOptions = Integer.parseInt(keyboardReader.readLine());
+        } catch (NumberFormatException e) {
+            selectionOfUserOptions = 0;
+        }
         return selectionOfUserOptions;
     }
 }

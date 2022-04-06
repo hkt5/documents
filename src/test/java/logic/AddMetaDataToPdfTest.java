@@ -1,12 +1,8 @@
 package logic;
 
-import logic.AddMetaDataToPDF;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,14 +43,6 @@ class AddMetaDataToPdfTest {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage();
         document.addPage( page );
-        PDFont font = PDType1Font.HELVETICA;
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        contentStream.beginText();
-        contentStream.setFont( font, 12 );
-        contentStream.moveTextPositionByAmount( 100, 700 );
-        contentStream.drawString( "Hello World" );
-        contentStream.endText();
-        contentStream.close();
         document.save(pathFile.toFile());
         document.close();
     }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,13 +50,13 @@ public class AddMetaDataToDocxTest {
     }
 
     private void createTempDocxFile(Path path) throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(path.toFile());
-        XWPFDocument xwpfDocument = new XWPFDocument(fileInputStream);
-        XWPFParagraph paragraph = xwpfDocument.createParagraph();
-        XWPFRun run = paragraph.createRun();
-        run.setText("Test");
+        XWPFDocument document = new XWPFDocument();
+        //Write the Document in file system
         FileOutputStream out = new FileOutputStream(path.toFile());
-        xwpfDocument.write(out);
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.setText("Test paragraph");
+        document.write(out);
         out.close();
     }
 }

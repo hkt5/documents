@@ -3,7 +3,9 @@ package logic;
 import ui.Messageble;
 import ui.UserInterface;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 
 public class GetPathFromConsole implements GetPathable{
 
@@ -14,7 +16,7 @@ public class GetPathFromConsole implements GetPathable{
     private Messageble messageble;
 
     public GetPathFromConsole() {
-        this.keyboardReader = new KeyboardReader();
+        this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.messageble = new UserInterface();
     }
 

@@ -3,6 +3,9 @@ package logic;
 import ui.Messageble;
 import ui.UserInterface;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 public class GetUserDecisionFromConsole implements GetDecision{
 
     private static final int USER_OPTION_IS_COPY_FILE = 1;
@@ -12,29 +15,19 @@ public class GetUserDecisionFromConsole implements GetDecision{
 
     public GetUserDecisionFromConsole() {
         this.messageble = new UserInterface();
-        this.keyboardReader = new KeyboardReader();
+        this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
     }
 
     @Override
-    public int getUserDecision() {
+    public int getUserDecision(GetNumberFromUser getNumberFromUser) {
         int chooseNumberForUser;
         do {
             messageble.getMessage("welcome-message");
-            chooseNumberForUser = getNumberFromUser();
+            chooseNumberForUser = getNumberFromUser.getNumberFromUser();
             if (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE)  {
                 messageble.getMessage("bad-choose");
             }
         } while (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE);
         return chooseNumberForUser;
-    }
-
-    private int getNumberFromUser() {
-        int selectionOfUserOptions = 0;
-        try {
-            selectionOfUserOptions = Integer.parseInt(keyboardReader.readLine());
-        } catch (NumberFormatException e) {
-            selectionOfUserOptions = 0;
-        }
-        return selectionOfUserOptions;
     }
 }

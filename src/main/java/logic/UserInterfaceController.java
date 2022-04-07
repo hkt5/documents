@@ -8,19 +8,21 @@ public class UserInterfaceController implements GetDecision, GetListOfPath, GetP
     private GetDecision getDecision;
     private GetListOfPath getListOfPath;
     private GetPathable getPathable;
+    private GetNumberFromUser getNumberFromUser;
 
     public UserInterfaceController() {
         this.getDecision = new GetUserDecisionFromConsole();
         this.getListOfPath = new GetListOfPathFromConsole();
         this.getPathable = new GetPathFromConsole();
+        this.getNumberFromUser = new GetNumberFromUser();
     }
 
-    public int getUserDecision() {
-        return getDecision.getUserDecision();
+    public int getUserDecision(GetNumberFromUser getNumberFromUser) {
+        return getDecision.getUserDecision(getNumberFromUser);
     }
 
-    public List<File> getListOfPathFromUser() {
-        return getListOfPath.getListOfPathFromUser();
+    public List<File> getListOfPathFromUser(KeyboardReader keyboardReader) {
+        return getListOfPath.getListOfPathFromUser(keyboardReader);
     }
 
     @Override

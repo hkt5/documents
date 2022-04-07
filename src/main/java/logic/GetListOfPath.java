@@ -4,5 +4,5 @@ import java.io.File;
 import java.util.List;
 
 public interface GetListOfPath {
-    List<File> getListOfPathFromUser();
+    List<File> getListOfPathFromUser(KeyboardReader keyboardReader);
 }

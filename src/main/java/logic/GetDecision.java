@@ -1,5 +1,5 @@
 package logic;
 
 public interface GetDecision {
-    int getUserDecision();
+    int getUserDecision(GetNumberFromUser getNumberFromUser);
 }

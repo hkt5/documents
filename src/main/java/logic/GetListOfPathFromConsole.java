@@ -3,7 +3,9 @@ package logic;
 import ui.Messageble;
 import ui.UserInterface;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +18,11 @@ public class GetListOfPathFromConsole implements GetListOfPath{
 
     public GetListOfPathFromConsole() {
         this.messageble = new UserInterface();
-        this.keyboardReader = new KeyboardReader();
+        this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
     }
 
     @Override
-    public List<File> getListOfPathFromUser() {
+    public List<File> getListOfPathFromUser(KeyboardReader keyboardReader) {
         List<File> listOfFile = new ArrayList<>();
         do {
             messageble.getMessage("please-enter-the-path");

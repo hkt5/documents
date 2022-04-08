@@ -36,8 +36,9 @@ class CopyFileTest {
         List<File> tempListOfFile = createTempListOfFile(tempDir);
         Path destinationDirectory = Files.createDirectory(tempDir.resolve("text/destination"));
         boolean copiedFiles = copyFile.perform(tempListOfFile, destinationDirectory.toFile());
-        assertEquals(true, copiedFiles,"Should return 3 files");
-
+        List<File> copiedListOfFiles = createTempListOfFile(destinationDirectory);
+        assertEquals(true, copiedFiles,"Should true if copied file");
+        assertEquals(3, copiedListOfFiles.size());
     }
 
     private List<File> createTempListOfFile(Path tempDir) throws IOException {

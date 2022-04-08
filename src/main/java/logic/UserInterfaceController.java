@@ -26,7 +26,7 @@ public class UserInterfaceController implements GetDecision, GetListOfPath, GetP
     }
 
     @Override
-    public File getPathFromUser() {
-        return getPathable.getPathFromUser();
+    public File getPathFromUser(KeyboardReader keyboardReader) {
+        return getPathable.getPathFromUser(keyboardReader);
     }
 }

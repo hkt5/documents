@@ -21,7 +21,7 @@ public class GetPathFromConsole implements GetPathable{
     }
 
     @Override
-    public File getPathFromUser() {
+    public File getPathFromUser(KeyboardReader keyboardReader) {
         File pathToDirectoryFromUser;
         do {
             messageble.getMessage("please-enter-destination-path");

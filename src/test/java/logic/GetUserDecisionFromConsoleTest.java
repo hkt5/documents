@@ -32,7 +32,14 @@ class GetUserDecisionFromConsoleTest {
     public void getUserDecisionTest() throws IOException {
         Mockito.when(getNumberFromUser.getNumberFromUser()).thenReturn(1);
         int aaa = getUserDecisionFromConsole.getUserDecision(getNumberFromUser);
-        assertEquals(1, aaa, "Should return list of 5 correct files");
+        assertEquals(1, aaa, "Should return 1");
+    }
+    @Test
+    @DisplayName("Should return decision from user: 1 or 2")
+    public void getUserDecisionTest2() throws IOException {
+        Mockito.when(getNumberFromUser.getNumberFromUser()).thenReturn(2);
+        int aaa = getUserDecisionFromConsole.getUserDecision(getNumberFromUser);
+        assertEquals(2, aaa, "Should return 2");
     }
 
 

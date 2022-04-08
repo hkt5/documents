@@ -41,7 +41,7 @@ public class ExecutableDocuments {
         if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) fileStrategy = new CopyFile();
         else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
         // for test
-        if (fileStrategy.perform(userInterfaceController.getListOfPathFromUser(keyboardReader),userInterfaceController.getPathFromUser())) {
+        if (fileStrategy.perform(userInterfaceController.getListOfPathFromUser(keyboardReader),userInterfaceController.getPathFromUser(keyboardReader))) {
             System.out.println("Copied");
         } else {
             System.out.println("Not");

@@ -1,6 +1,7 @@
 
 import logic.*;
 import data.UserOptions;
+import ui.UserInterface;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ public class ExecutableDocuments {
     private FileStrategy fileStrategy;
     private KeyboardReader keyboardReader;
     private GetNumberFromUser getNumberFromUser;
+    private UserInterface userInterface;
 
     public ExecutableDocuments() {
         this.userInterfaceController = new UserInterfaceController();
@@ -25,6 +27,8 @@ public class ExecutableDocuments {
         this.fileStrategy = null;
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.getNumberFromUser = new GetNumberFromUser();
+        this.userInterface = new UserInterface();
+
     }
 
     public static void main(String[] args)  {
@@ -42,9 +46,9 @@ public class ExecutableDocuments {
         else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
         // for test
         if (fileStrategy.perform(userInterfaceController.getListOfPathFromUser(keyboardReader),userInterfaceController.getPathFromUser(keyboardReader))) {
-            System.out.println("Copied");
+            userInterface.getMessage("files-copied");
         } else {
-            System.out.println("Not");
+            userInterface.getMessage("problem-with-copy-file");
         }
     }
 }

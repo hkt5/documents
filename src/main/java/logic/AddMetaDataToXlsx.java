@@ -11,7 +11,7 @@ public class AddMetaDataToXlsx implements MetaDataAddable{
             FileInputStream fileInputStream = new FileInputStream(file);
             XSSFWorkbook xlsxSetMetadata = new XSSFWorkbook(fileInputStream);
             POIXMLProperties props = xlsxSetMetadata.getProperties();
-            POIXMLProperties.CoreProperties coreProp=props.getCoreProperties();
+            POIXMLProperties.CoreProperties coreProp = props.getCoreProperties();
             coreProp.setKeywords(hash);
             FileOutputStream out = new FileOutputStream(file);
             xlsxSetMetadata.write(out);

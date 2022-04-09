@@ -49,7 +49,7 @@ class CopyFileTest {
         Path xlsxFile = Files.createFile(tempDir.resolve("text/test.xlsx"));
         createTempXlsXFile(xlsxFile);
         Path txtFile = Files.createFile(tempDir.resolve("text/test.txt"));
-
+        createTempTxtFile(txtFile);
         return listOfFileCreatorFromPath.getListOfFile(directory.toString());
     }
 

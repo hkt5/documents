@@ -24,10 +24,14 @@ public class GetUserDecisionFromConsole implements GetDecision{
         do {
             messageble.getMessage("welcome-message");
             chooseNumberForUser = getNumberFromUser.getNumberFromUser();
-            if (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE)  {
-                messageble.getMessage("bad-choose");
-            }
+            displayMessageAboutWrongChoose(chooseNumberForUser);
         } while (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE);
         return chooseNumberForUser;
+    }
+
+    private void displayMessageAboutWrongChoose(int chooseNumberForUser) {
+        if (chooseNumberForUser != USER_OPTION_IS_COPY_FILE && chooseNumberForUser != USER_OPTION_IS_READ_FILE)  {
+            messageble.getMessage("bad-choose");
+        }
     }
 }

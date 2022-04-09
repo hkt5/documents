@@ -24,37 +24,45 @@ public class CopyFile implements FileStrategy {
 
     @Override
     public boolean perform(List<File> fileList, File destination) {
-        try {
-            for (File file : fileList) {
-                FileUtils.copyFileToDirectory(file, destination);
-                String hashCopedFile = getFileChecksum(getMessageDigest(), new File(destination.getAbsolutePath() + "/" + file.getName()));
-                File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
-
-                if (!isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName())) {
-                    return false;
-                } else if (!addHash(copiedFile, hashCopedFile)) {
-                    return false;
-                }
+        for (File file : fileList) {
+            File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
+            if (!copyFile(file, destination)) {
+                return false;
+            } else if (!addHash(copiedFile)) {
+                return false;
             }
-            return true;
-        } catch (IOException | NoSuchAlgorithmException exception) {
+        }
+        return true;
+    }
+
+    private boolean copyFile(File file, File destination) {
+        try {
+            FileUtils.copyFileToDirectory(file, destination);
+            return isIdentical(file.getAbsolutePath(), destination.getAbsolutePath() + "/" + file.getName());
+        } catch (IOException ioException) {
             return false;
         }
     }
 
-    private boolean addHash(File file, String hash) {
+    private boolean addHash(File file) {
+        String hashCopedFile;
+        try {
+            hashCopedFile = getFileChecksum(getMessageDigest(), file);
+        } catch (NoSuchAlgorithmException | IOException e) {
+            return false;
+        }
         MetaDataAddable metaDataAddable;
         if (checkIfParameterFileHasParameterExtension(file, PDF_FILE)) {
             metaDataAddable = new AddMetaDataToPDF();
-            metaDataAddable.addKeywordToMetaData(file,hash);
+            metaDataAddable.addKeywordToMetaData(file,hashCopedFile);
             return true;
         } else if (checkIfParameterFileHasParameterExtension(file, XLSX_FILE)) {
             metaDataAddable = new AddMetaDataToXlsx();
-            metaDataAddable.addKeywordToMetaData(file,hash);
+            metaDataAddable.addKeywordToMetaData(file,hashCopedFile);
             return true;
         } else if (checkIfParameterFileHasParameterExtension(file, DOCX_FILE)) {
             metaDataAddable = new AddMetaDataToDocx();
-            metaDataAddable.addKeywordToMetaData(file,hash);
+            metaDataAddable.addKeywordToMetaData(file,hashCopedFile);
             return true;
         } else {
             return false;

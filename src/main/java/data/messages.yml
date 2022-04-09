@@ -17,3 +17,5 @@ continue: |+
   E. EXIT - Enter E char to finish adding files.
 bad-choose-letter: Bad choice! You can only choose N or E
 problem-with-copy-file: There was a problem copying files
+files-copied: Files copied!
+files-not-copied: The files were not copied!

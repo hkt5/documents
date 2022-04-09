@@ -20,7 +20,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CopyFileTest {
-
     private ListOfFileCreatorFromPath listOfFileCreatorFromPath;
     private CopyFile copyFile;
 
@@ -34,9 +33,9 @@ class CopyFileTest {
     @DisplayName("Should copy List<File> to directory.")
     public void performTest(@TempDir Path tempDir) throws IOException {
         List<File> tempListOfFile = createTempListOfFile(tempDir);
-        Path destinationDirectory = Files.createDirectory(tempDir.resolve("text/destination"));
+        Path destinationDirectory = Files.createDirectory(tempDir.resolve("destination"));
         boolean copiedFiles = copyFile.perform(tempListOfFile, destinationDirectory.toFile());
-        List<File> copiedListOfFiles = listOfFileCreatorFromPath.getListOfFile(destinationDirectory.toString());
+        List<File> copiedListOfFiles = new ListOfFileCreatorFromPath().getListOfFile(destinationDirectory.toAbsolutePath().toString());
         assertEquals(true, copiedFiles,"Should true if copied file");
         assertEquals(3, copiedListOfFiles.size(), "Should copied 3 files.");
     }

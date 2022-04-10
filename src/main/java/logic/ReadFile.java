@@ -1,11 +1,11 @@
 package logic;
 
-import logic.FileStrategy;
-
 import java.io.File;
+import java.util.List;
 
 public class ReadFile  implements FileStrategy {
     @Override
-    public void perform(File file)  {
+    public boolean perform(List<File> fileList, File destination) {
+        return false;
     }
 }

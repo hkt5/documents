@@ -1,25 +1,32 @@
 package logic;
 
-import ui.Messageble;
-import ui.UserInterface;
+import java.io.*;
+import java.util.List;
 
-import java.util.Scanner;
+public class UserInterfaceController implements GetDecision, GetListOfPath, GetPathable {
 
-public class UserInterfaceController {
+    private GetDecision getDecision;
+    private GetListOfPath getListOfPath;
+    private GetPathable getPathable;
+    private GetNumberFromUser getNumberFromUser;
 
-    private static final int USER_OPTION_IS_COPY_FILE = 1;
-    private static final int USER_OPTION_IS_READ_FILE = 2;
-    private Messageble messageble = new UserInterface();
+    public UserInterfaceController() {
+        this.getDecision = new GetUserDecisionFromConsole();
+        this.getListOfPath = new GetListOfPathFromConsole();
+        this.getPathable = new GetPathFromConsole();
+        this.getNumberFromUser = new GetNumberFromUser();
+    }
 
-    public int getUserDecision() {
-        messageble.getMessage("welcome-message");
-        Scanner scanner = new Scanner(System.in);
-        int selectionOfUserOptions = scanner.nextInt();
-        while (selectionOfUserOptions != USER_OPTION_IS_COPY_FILE && selectionOfUserOptions != USER_OPTION_IS_READ_FILE) {
-            messageble.getMessage("bad-choose");
-            selectionOfUserOptions = scanner.nextInt();
-        }
-        scanner.close();
-        return selectionOfUserOptions;
+    public int getUserDecision(GetNumberFromUser getNumberFromUser) {
+        return getDecision.getUserDecision(getNumberFromUser);
+    }
+
+    public List<File> getListOfPathFromUser(KeyboardReader keyboardReader) {
+        return getListOfPath.getListOfPathFromUser(keyboardReader);
+    }
+
+    @Override
+    public File getPathFromUser(KeyboardReader keyboardReader) {
+        return getPathable.getPathFromUser(keyboardReader);
     }
 }

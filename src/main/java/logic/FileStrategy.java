@@ -1,7 +1,8 @@
 package logic;
 
 import java.io.File;
+import java.util.List;
 
 public interface FileStrategy {
-    void perform(File file);
+    boolean perform(List<File> fileList, File destination);
 }

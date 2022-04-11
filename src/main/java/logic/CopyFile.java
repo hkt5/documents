@@ -3,7 +3,6 @@ package logic;
 import org.apache.commons.io.FileUtils;
 import ui.Messageble;
 import ui.UserInterface;
-
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -3,11 +3,11 @@ package logic;
 import org.apache.commons.io.FileUtils;
 import ui.Messageble;
 import ui.UserInterface;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CopyFile implements FileStrategy {
@@ -15,15 +15,31 @@ public class CopyFile implements FileStrategy {
     private final String PDF_FILE = "pdf";
     private final String DOCX_FILE = "docx";
     private final String XLSX_FILE = "xlsx";
-    Messageble messageble;
-
+    private Messageble messageble;
+    private UserInterfaceController userInterfaceController;
+    private KeyboardReader keyboardReader;
+    List<File> fileList;
+    File destination;
 
     public CopyFile() {
-        messageble = new UserInterface();
+        this.messageble = new UserInterface();
+        this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
+        this.userInterfaceController = new UserInterfaceController();
+        this.fileList = new ArrayList<>();
+        fileList = userInterfaceController.getListOfPathFromUser(keyboardReader);
+        destination = userInterfaceController.getPathFromUser(keyboardReader);
+    }
+
+    public CopyFile(List<File> fileList, File destination) {
+        this.messageble = new UserInterface();
+        this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
+        this.userInterfaceController = new UserInterfaceController();
+        this.fileList = fileList;
+        this.destination = destination;
     }
 
     @Override
-    public boolean perform(List<File> fileList, File destination) {
+    public boolean perform() {
         for (File file : fileList) {
             File copiedFile = new File(destination.getAbsolutePath() + "/" + file.getName());
             if (!copyFile(file, destination)) {
@@ -34,6 +50,8 @@ public class CopyFile implements FileStrategy {
         }
         return true;
     }
+
+
 
     private boolean copyFile(File file, File destination) {
         try {

@@ -21,3 +21,5 @@ bad-choose-letter: Bad choice! You can only choose N or E
 problem-with-copy-file: There was a problem copying files
 files-copied: Files copied!
 files-not-copied: The files were not copied!
+file-is-based-on-xml: The file is based on xml format
+file-not-is-based-on-xml: The file is not based on xml format

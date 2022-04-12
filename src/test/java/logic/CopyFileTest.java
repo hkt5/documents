@@ -1,5 +1,6 @@
 package logic;
 
+import data.ResultData;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,9 +35,9 @@ class CopyFileTest {
         List<File> tempListOfFile = createTempListOfFile(tempDir);
         Path destinationDirectory = Files.createDirectory(tempDir.resolve("destination"));
         CopyFile copyFile = new CopyFile(tempListOfFile, destinationDirectory.toFile());
-        boolean copiedFiles = copyFile.perform();
+        ResultData copiedFiles = copyFile.perform();
         List<File> copiedListOfFiles = new ListOfFileCreatorFromPath().getListOfFile(destinationDirectory.toAbsolutePath().toString());
-        assertEquals(true, copiedFiles,"Should true if copied file");
+        assertEquals("files-copied", copiedFiles.getResultMassage(),"Should return string: files-copied");
         assertEquals(3, copiedListOfFiles.size(), "Should copied 3 files.");
     }
 

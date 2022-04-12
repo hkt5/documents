@@ -1,10 +1,8 @@
 
+import data.ResultData;
 import logic.*;
 import data.UserOptions;
 import ui.UserInterface;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class ExecutableDocuments {
 
@@ -43,10 +41,7 @@ public class ExecutableDocuments {
         if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) fileStrategy = new CopyFile();
         else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
         // for test
-        if (fileStrategy.perform()) {
-            userInterface.getMessage("files-copied");
-        } else {
-            userInterface.getMessage("problem-with-copy-file");
-        }
+        ResultData resultData = fileStrategy.perform();
+        userInterface.getMessage(resultData.getResultMassage());
     }
 }

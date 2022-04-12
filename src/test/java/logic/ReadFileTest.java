@@ -58,6 +58,6 @@ class ReadFileTest {
         tempFileCreator.createTempTxtFile(txtFile);
         FileStrategy fileStrategy = new ReadFile(txtFile.toFile());
         ResultData resultData = fileStrategy.perform();
-        assertEquals("file-is-based-on-xml", resultData.getResultMassage(),"Should return string: file-not-is-based-on-xml");
+        assertEquals("file-not-is-based-on-xml", resultData.getResultMassage(),"Should return string: file-not-is-based-on-xml");
     }
 }

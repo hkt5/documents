@@ -22,4 +22,4 @@ problem-with-copy-file: There was a problem copying files
 files-copied: Files copied!
 files-not-copied: The files were not copied!
 file-is-based-on-xml: The file is based on xml format
-file-not-is-based-on-xml: The file is not based on xml format
+file-is-not-based-on-xml: The file is not based on xml format

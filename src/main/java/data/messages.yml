@@ -4,9 +4,11 @@ welcome-message: |+
   2. Compare File
 bad-choose: Bad choice! You can only choose 1 or 2
 please-enter-the-path: Please enter the path to a file or directory
+please-enter-the-path-to-file: Please enter the path to file
 please-enter-destination-path: Please enter the destination directory
 wrong-path: Wrong path to file or directory
 wrong-directory: Wrong directory
+wrong-path-to-file: Path to file not exist!
 added-file: >
   File Added:
 wrong-extension: Failed to add the file. Incorrect file extension
@@ -19,3 +21,5 @@ bad-choose-letter: Bad choice! You can only choose N or E
 problem-with-copy-file: There was a problem copying files
 files-copied: Files copied!
 files-not-copied: The files were not copied!
+file-is-based-on-xml: The file is based on xml format
+file-is-not-based-on-xml: The file is not based on xml format

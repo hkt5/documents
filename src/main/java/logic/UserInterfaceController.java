@@ -17,6 +17,13 @@ public class UserInterfaceController implements GetDecision, GetListOfPath, GetP
         this.getNumberFromUser = new GetNumberFromUser();
     }
 
+    public UserInterfaceController(GetPathable pathable) {
+        this.getDecision = new GetUserDecisionFromConsole();
+        this.getListOfPath = new GetListOfPathFromConsole();
+        this.getPathable = pathable;
+        this.getNumberFromUser = new GetNumberFromUser();
+    }
+
     public int getUserDecision(GetNumberFromUser getNumberFromUser) {
         return getDecision.getUserDecision(getNumberFromUser);
     }

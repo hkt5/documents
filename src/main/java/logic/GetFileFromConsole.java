@@ -33,8 +33,9 @@ public class GetFileFromConsole implements GetPathable{
     private boolean checkIfUserPathExist(File pathToFileFromUser) {
         if (!pathToFileFromUser.isDirectory() && pathToFileFromUser.exists()) {
             return userDoNotHaveToRepeatWritePath;
-        } else
+        } else {
             messageble.getMessage("wrong-path-to-file");
-        return userHaveToRepeatWritePath;
+            return userHaveToRepeatWritePath;
+        }
     }
 }

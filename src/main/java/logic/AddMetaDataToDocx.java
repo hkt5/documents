@@ -2,7 +2,6 @@ package logic;
 
 import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
 import java.io.*;
 
 public class AddMetaDataToDocx implements MetaDataAddable{

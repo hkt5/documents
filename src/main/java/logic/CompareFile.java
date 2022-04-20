@@ -4,9 +4,15 @@ import data.ResultData;
 import ui.Messageble;
 import ui.UserInterface;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class CompareFile implements FileStrategy {
     private final String PDF_FILE = "pdf";
@@ -36,6 +42,36 @@ public class CompareFile implements FileStrategy {
 
     @Override
     public ResultData perform() {
+
+        FileInputStream fis = null;
+        ZipInputStream zipIs = null;
+        ZipEntry zEntry = null;
+        try {
+            fis = new FileInputStream(sourceFile);
+            zipIs = new ZipInputStream(new BufferedInputStream(fis));
+            while ((zEntry = zipIs.getNextEntry()) != null) {
+                try {
+
+                    Path firstFile = Paths.get("F:\\Dupa\\test1.txt");
+                    List<String> diff = diffFiles(Paths.get(zEntry.getName()), firstFile);
+                    for (String aaa : diff) {
+                        System.out.println(aaa);
+                    }
+                    System.out.println(zEntry.getName());
+                } catch (Exception ex) {
+
+                }
+            }
+            zipIs.close();
+            fis.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         ResultData resultData = new ResultData();
         resultData.setResultMassage("test");
         return resultData;
@@ -68,5 +104,17 @@ public class CompareFile implements FileStrategy {
         String fileName = file.toString();
         int index = fileName.lastIndexOf('.');
         return fileName.substring(index + 1);
+    }
+
+    private static List<String> diffFiles(Path firstFile, Path secondFile) throws IOException {
+        List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
+        List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
+        List<String> diff = new ArrayList<String>();
+        for (String line : firstFileContent) {
+            if (!secondFileContent.contains(line)) {
+                diff.add(line);
+            }
+        }
+        return diff;
     }
 }

@@ -1,6 +1,8 @@
 package logic;
 
 import data.ResultData;
+import logic.unzip.UnzipFileToDirectoryController;
+import logic.unzip.UnzipFileToDirectoryable;
 import ui.Messageble;
 import ui.UserInterface;
 
@@ -22,6 +24,7 @@ public class CompareFile implements FileStrategy {
     private Messageble messageble;
     private UserInterfaceController userInterfaceController;
     private KeyboardReader keyboardReader;
+    private UnzipFileToDirectoryable unzipFileToDirectoryable;
     private File sourceFile;
     private File fileToCompare;
 
@@ -29,6 +32,7 @@ public class CompareFile implements FileStrategy {
         this.messageble = new UserInterface();
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
+        unzipFileToDirectoryable = new UnzipFileToDirectoryController();
         getFilesFromUser();
     }
 
@@ -36,13 +40,20 @@ public class CompareFile implements FileStrategy {
         this.messageble = new UserInterface();
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
+        unzipFileToDirectoryable = new UnzipFileToDirectoryController();
         this.sourceFile = sourceFile;
         this.fileToCompare = fileToCompare;
     }
 
     @Override
     public ResultData perform() {
+        try {
+            Path tempDir = Files.createTempDirectory("");
+            unzipFileToDirectoryable.unzip(sourceFile.toPath(), tempDir);
 
+        } catch (IOException ioException) {
+            System.out.println(ioException);
+        }
         FileInputStream fis = null;
         ZipInputStream zipIs = null;
         ZipEntry zEntry = null;
@@ -52,14 +63,19 @@ public class CompareFile implements FileStrategy {
             while ((zEntry = zipIs.getNextEntry()) != null) {
                 try {
 
-                    Path firstFile = Paths.get("F:\\Dupa\\test1.txt");
-                    List<String> diff = diffFiles(Paths.get(zEntry.getName()), firstFile);
+                    Path firstFile = Paths.get("C:\\Prywatne\\sdf.txt");
+                    File file = new File(zEntry.getName());
+                    Path tempDirWithPrefix2 = Files.createTempDirectory("");
+                    System.out.println(tempDirWithPrefix2.toAbsolutePath());
+                    System.out.println("Path: " + file.getAbsolutePath());
+                    FileOutputStream fos = new FileOutputStream(tempDirWithPrefix2 + "/" + zEntry.getName());
+                    List<String> diff = diffFiles(Paths.get(tempDirWithPrefix2 + "/" + zEntry.getName()), firstFile);
                     for (String aaa : diff) {
                         System.out.println(aaa);
                     }
-                    System.out.println(zEntry.getName());
+                    System.out.println("ZIP entry" + zEntry.getName());
                 } catch (Exception ex) {
-
+                    System.out.println(ex);
                 }
             }
             zipIs.close();

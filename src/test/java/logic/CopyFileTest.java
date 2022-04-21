@@ -1,6 +1,7 @@
 package logic;
 
 import data.ResultData;
+import logic.ListFileCreator.ListOfPdfXlsxDocxFilesFromPathCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -21,12 +22,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CopyFileTest {
-    private ListOfFileCreatorFromPath listOfFileCreatorFromPath;
+    private ListOfPdfXlsxDocxFilesFromPathCreator listOfFileCreatorFromPath;
 
 
     @BeforeEach
     public void setup() {
-        listOfFileCreatorFromPath = new ListOfFileCreatorFromPath();
+        listOfFileCreatorFromPath = new ListOfPdfXlsxDocxFilesFromPathCreator();
     }
 
     @Test
@@ -36,7 +37,7 @@ class CopyFileTest {
         Path destinationDirectory = Files.createDirectory(tempDir.resolve("destination"));
         CopyFile copyFile = new CopyFile(tempListOfFile, destinationDirectory.toFile());
         ResultData copiedFiles = copyFile.perform();
-        List<File> copiedListOfFiles = new ListOfFileCreatorFromPath().getListOfFile(destinationDirectory.toAbsolutePath().toString());
+        List<File> copiedListOfFiles = new ListOfPdfXlsxDocxFilesFromPathCreator().getListOfFile(destinationDirectory.toAbsolutePath().toString());
         assertEquals("files-copied", copiedFiles.getResultMassage(),"Should return string: files-copied");
         assertEquals(3, copiedListOfFiles.size(), "Should copied 3 files.");
     }

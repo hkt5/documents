@@ -1,11 +1,12 @@
 package logic;
 
 import data.ResultData;
+import logic.ListFileCreator.ListFileCreator;
+import logic.ListFileCreator.ListOfFilesFromPathCreator;
 import logic.unzip.UnzipFileToDirectoryController;
 import logic.unzip.UnzipFileToDirectoryable;
 import ui.Messageble;
 import ui.UserInterface;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -25,6 +26,7 @@ public class CompareFile implements FileStrategy {
     private UserInterfaceController userInterfaceController;
     private KeyboardReader keyboardReader;
     private UnzipFileToDirectoryable unzipFileToDirectoryable;
+    private ListFileCreator listFileCreator;
     private File sourceFile;
     private File fileToCompare;
 
@@ -33,6 +35,7 @@ public class CompareFile implements FileStrategy {
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
         unzipFileToDirectoryable = new UnzipFileToDirectoryController();
+        listFileCreator = new ListOfFilesFromPathCreator();
         getFilesFromUser();
     }
 
@@ -41,6 +44,7 @@ public class CompareFile implements FileStrategy {
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
         unzipFileToDirectoryable = new UnzipFileToDirectoryController();
+        listFileCreator = new ListOfFilesFromPathCreator();
         this.sourceFile = sourceFile;
         this.fileToCompare = fileToCompare;
     }
@@ -48,8 +52,20 @@ public class CompareFile implements FileStrategy {
     @Override
     public ResultData perform() {
         try {
-            Path tempDir = Files.createTempDirectory("");
-            unzipFileToDirectoryable.unzip(sourceFile.toPath(), tempDir);
+            Path tempDirSource = Files.createTempDirectory("");
+            Path tempDirToCompare = Files.createTempDirectory("");
+            unzipFileToDirectoryable.unzip(sourceFile.toPath(), tempDirSource);
+            unzipFileToDirectoryable.unzip(fileToCompare.toPath(), tempDirToCompare);
+            List<File> sourceFiles = listFileCreator.getListOfFile(tempDirSource.toString());
+            List<File> filesToCompare = listFileCreator.getListOfFile(tempDirSource.toString());
+
+            for (File f : sourceFiles) {
+                System.out.println(f.getAbsolutePath().replace(tempDirSource.toString(), ""));
+            }
+            System.out.println("--------------------------------------");
+            for (File f : filesToCompare) {
+                System.out.println(f.getAbsolutePath().replace(tempDirToCompare.toString(), ""));
+            }
 
         } catch (IOException ioException) {
             System.out.println(ioException);

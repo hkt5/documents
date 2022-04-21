@@ -1,4 +1,4 @@
-package logic;
+package logic.ListFileCreator;
 
 import java.io.File;
 import java.util.List;

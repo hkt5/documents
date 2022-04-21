@@ -1,5 +1,7 @@
 package logic;
 
+import logic.ListFileCreator.ListFileCreator;
+import logic.ListFileCreator.ListOfPdfXlsxDocxFilesFromPathCreator;
 import ui.Messageble;
 import ui.UserInterface;
 import java.io.BufferedReader;
@@ -26,7 +28,7 @@ public class GetListOfPathFromConsole implements GetListOfPath{
         do {
             messageble.getMessage("please-enter-the-path");
             String nextPathToFile = keyboardReader.readLine();
-            ListFileCreator listOfFileCreator = new ListOfFileCreatorFromPath();
+            ListFileCreator listOfFileCreator = new ListOfPdfXlsxDocxFilesFromPathCreator();
             listOfFile.addAll(listOfFileCreator.getListOfFile(nextPathToFile));
         } while (getUserDecisionToAddNextPath());
         return listOfFile;

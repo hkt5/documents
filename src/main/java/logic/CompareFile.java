@@ -26,7 +26,6 @@ public class CompareFile implements FileStrategy {
     private UserInterfaceController userInterfaceController;
     private KeyboardReader keyboardReader;
     private UnzipFileToDirectoryable unzipFileToDirectoryable;
-    private ListFileCreator listFileCreator;
     private File sourceFile;
     private File fileToCompare;
 
@@ -35,7 +34,6 @@ public class CompareFile implements FileStrategy {
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
         unzipFileToDirectoryable = new UnzipFileToDirectoryController();
-        listFileCreator = new ListOfFilesFromPathCreator();
         getFilesFromUser();
     }
 
@@ -44,7 +42,6 @@ public class CompareFile implements FileStrategy {
         this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
         unzipFileToDirectoryable = new UnzipFileToDirectoryController();
-        listFileCreator = new ListOfFilesFromPathCreator();
         this.sourceFile = sourceFile;
         this.fileToCompare = fileToCompare;
     }
@@ -56,57 +53,28 @@ public class CompareFile implements FileStrategy {
             Path tempDirToCompare = Files.createTempDirectory("");
             unzipFileToDirectoryable.unzip(sourceFile.toPath(), tempDirSource);
             unzipFileToDirectoryable.unzip(fileToCompare.toPath(), tempDirToCompare);
-            List<File> sourceFiles = listFileCreator.getListOfFile(tempDirSource.toString());
-            List<File> filesToCompare = listFileCreator.getListOfFile(tempDirSource.toString());
+            List<File> sourceFiles = new ListOfFilesFromPathCreator().getListOfFile(tempDirSource.toString());
+            List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
 
-            for (File f : sourceFiles) {
-                System.out.println(f.getAbsolutePath().replace(tempDirSource.toString(), ""));
-            }
-            System.out.println("--------------------------------------");
-            for (File f : filesToCompare) {
-                System.out.println(f.getAbsolutePath().replace(tempDirToCompare.toString(), ""));
-            }
+            System.out.println(getListOfDifferences(sourceFiles, filesToCompare));
 
         } catch (IOException ioException) {
-            System.out.println(ioException);
-        }
-        FileInputStream fis = null;
-        ZipInputStream zipIs = null;
-        ZipEntry zEntry = null;
-        try {
-            fis = new FileInputStream(sourceFile);
-            zipIs = new ZipInputStream(new BufferedInputStream(fis));
-            while ((zEntry = zipIs.getNextEntry()) != null) {
-                try {
-
-                    Path firstFile = Paths.get("C:\\Prywatne\\sdf.txt");
-                    File file = new File(zEntry.getName());
-                    Path tempDirWithPrefix2 = Files.createTempDirectory("");
-                    System.out.println(tempDirWithPrefix2.toAbsolutePath());
-                    System.out.println("Path: " + file.getAbsolutePath());
-                    FileOutputStream fos = new FileOutputStream(tempDirWithPrefix2 + "/" + zEntry.getName());
-                    List<String> diff = diffFiles(Paths.get(tempDirWithPrefix2 + "/" + zEntry.getName()), firstFile);
-                    for (String aaa : diff) {
-                        System.out.println(aaa);
-                    }
-                    System.out.println("ZIP entry" + zEntry.getName());
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
-            }
-            zipIs.close();
-            fis.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println(ioException.fillInStackTrace());
         }
 
         ResultData resultData = new ResultData();
         resultData.setResultMassage("test");
         return resultData;
+    }
+
+    private List<String> getListOfDifferences(List<File> sourceFiles, List<File> compareFiles ) throws IOException {
+        List<String> diff = null;
+        for (File sourceFile : sourceFiles) {
+            if (compareFiles.contains(sourceFile)) {
+                diff = diffFiles(sourceFile.toPath(), compareFiles.get(compareFiles.indexOf(sourceFile)).toPath());
+            }
+        }
+        return diff;
     }
 
     private void getFilesFromUser() {
@@ -141,7 +109,7 @@ public class CompareFile implements FileStrategy {
     private static List<String> diffFiles(Path firstFile, Path secondFile) throws IOException {
         List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
         List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
-        List<String> diff = new ArrayList<String>();
+        List<String> diff = new ArrayList<>();
         for (String line : firstFileContent) {
             if (!secondFileContent.contains(line)) {
                 diff.add(line);

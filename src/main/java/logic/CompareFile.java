@@ -99,7 +99,7 @@ public class CompareFile implements FileStrategy {
         for (File compareFile : compareFiles) {
             if (!fileNameExistInListOfFile(compareFile, sourceFiles)) {
                 FileDifference fileDifference = new FileDifference();
-                fileDifference.setFileName(sourceFile.getName());
+                fileDifference.setFileName(compareFile.getName());
                 fileDifference.setStatusFile(StatusFile.NEW);
                 listOfFileNameWithDifference.add(fileDifference);
             }

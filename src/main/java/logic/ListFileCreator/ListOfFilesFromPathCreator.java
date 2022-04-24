@@ -38,8 +38,7 @@ public class ListOfFilesFromPathCreator implements ListFileCreator {
     }
 
     private void readDirectory(File file) {
-        File[] files = file.listFiles();
-        for(File fileInDirectory : files) {
+        for(File fileInDirectory : file.listFiles()) {
             if(fileInDirectory.isFile()) {
                 listOfFiles.add(fileInDirectory);
             } else {

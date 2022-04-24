@@ -40,11 +40,9 @@ public class UnzipFileToDirectoryController implements UnzipFileToDirectoryable{
     private void copyFiles(Boolean isDirectory, Path newPath, ZipInputStream zis) throws IOException {
         if (isDirectory) {
             Files.createDirectories(newPath);
-        } else {
-            if (newPath.getParent() != null) {
-                if (Files.notExists(newPath.getParent())) {
-                    Files.createDirectories(newPath.getParent());
-                }
+        } else if (newPath.getParent() != null) {
+            if (Files.notExists(newPath.getParent())) {
+                Files.createDirectories(newPath.getParent());
             }
             Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
         }

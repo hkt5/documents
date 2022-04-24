@@ -13,7 +13,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CompareFile implements FileStrategy {
@@ -54,8 +53,9 @@ public class CompareFile implements FileStrategy {
             unzipFileToDirectoryable.unzip(fileToCompare.toPath(), tempDirToCompare);
             List<File> sourceFiles = new ListOfFilesFromPathCreator().getListOfFile(tempDirSource.toString());
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
-            //testing
+
             List<FileDifference> fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
+            /* testing
             for (FileDifference cos : fileDifferences ) {
                 System.out.println("Plik: " +  cos.getFileName());
                 if (cos.getStatusFile() == StatusFile.CHANGE) {
@@ -68,7 +68,7 @@ public class CompareFile implements FileStrategy {
                 System.out.println("---------------------");
             }
             System.out.println();
-
+            */
         } catch (IOException ioException) {
             System.out.println(ioException.fillInStackTrace());
         }

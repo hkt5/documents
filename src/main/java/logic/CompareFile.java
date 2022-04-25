@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CompareFile implements FileStrategy {
@@ -109,9 +110,12 @@ public class CompareFile implements FileStrategy {
     }
 
     private boolean fileNameExistInListOfFile(File file, List<File> listOfFiles) {
-        for (File fileFromList : listOfFiles) {
-            if (fileFromList.getName().equals(file.getName())) return true;
-        }
+        Iterator<File> listOfFilesIterator = listOfFiles.iterator();
+        do {
+            if (listOfFilesIterator.next().getName().equals(file.getName())) {
+                return true;
+            }
+        } while (listOfFilesIterator.hasNext());
         return false;
     }
 
@@ -120,6 +124,7 @@ public class CompareFile implements FileStrategy {
         for (int i = 0; i < listFiles.size(); i++) {
             if(listFiles.get(i).getName().equals(fileName)) {
                 index = i;
+                break;
             }
         }
         return index;
@@ -129,9 +134,10 @@ public class CompareFile implements FileStrategy {
         List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
         List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
         List<String> diff = new ArrayList<>();
-        for (String line : firstFileContent) {
-            if (!secondFileContent.contains(line)) {
-                diff.add(line);
+        Iterator<String> lineIterator = firstFileContent.iterator();
+        while (lineIterator.hasNext()) {
+            if (!secondFileContent.contains(lineIterator.next())) {
+                diff.add(lineIterator.next());
             }
         }
         return diff;
@@ -147,10 +153,10 @@ public class CompareFile implements FileStrategy {
         String extensionFirstFile = getExtension(sourceFile);
         messageble.getMessage("add-second-file");
         this.fileToCompare = userInterfaceController.getPathFromUser(keyboardReader);
-        /*while (!getExtension(fileToCompare).equals(extensionFirstFile)) {
+        while (!getExtension(fileToCompare).equals(extensionFirstFile)) {
             messageble.getMessage("compare-file-should-the-same-extension");
             this.fileToCompare = userInterfaceController.getPathFromUser(keyboardReader);
-        }*/
+        }
     }
 
     private Boolean checkFileExtension(File file, String extension) {

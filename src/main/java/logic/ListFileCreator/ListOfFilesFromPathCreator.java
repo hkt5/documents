@@ -2,7 +2,6 @@ package logic.ListFileCreator;
 
 import ui.Messageble;
 import ui.UserInterface;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

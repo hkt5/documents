@@ -11,22 +11,17 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipFileToDirectoryController implements UnzipFileToDirectoryable{
     @Override
-    public void unzip(Path source, Path target) {
-        try {
-            ZipInputStream zis = new ZipInputStream(new FileInputStream(source.toFile()));
-            ZipEntry zipEntry = zis.getNextEntry();
+    public void unzip(Path source, Path target) throws IOException {
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(source.toFile()));
+        ZipEntry zipEntry = zis.getNextEntry();
 
-            while (zipEntry != null) {
-                boolean isDirectory = isDirectory(zipEntry);
-                Path newPath = zipSlipProtect(zipEntry, target);
-                copyFiles(isDirectory, newPath, zis);
-                zipEntry = zis.getNextEntry();
-
-            }
-            zis.closeEntry();
-        } catch (IOException ioException) {
-            System.out.println(ioException);
+        while (zipEntry != null) {
+            boolean isDirectory = isDirectory(zipEntry);
+            Path newPath = zipSlipProtect(zipEntry, target);
+            copyFiles(isDirectory, newPath, zis);
+            zipEntry = zis.getNextEntry();
         }
+        zis.closeEntry();
     }
 
     private boolean isDirectory(ZipEntry zipEntry) {

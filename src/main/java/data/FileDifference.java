@@ -7,6 +7,16 @@ public class FileDifference {
     private StatusFile statusFile;
     private List<String> differences;
 
+    public FileDifference(String fileName, StatusFile statusFile) {
+        this.fileName = fileName;
+        this.statusFile = statusFile;
+    }
+
+    public FileDifference(String fileName, StatusFile statusFile, List<String> differences) {
+        this.fileName = fileName;
+        this.statusFile = statusFile;
+        this.differences = differences;
+    }
 
     public void setFileName(String fileName) {
         this.fileName = fileName;

@@ -83,27 +83,18 @@ public class CompareFile implements FileStrategy {
         List<FileDifference> listOfFileNameWithDifference = new ArrayList<>();
         for (File sourceFile : sourceFiles) {
             if (fileNameExistInListOfFile(sourceFile, compareFiles)) {
-                FileDifference fileDifference = new FileDifference();
-                fileDifference.setFileName(sourceFile.getName());
-                fileDifference.setStatusFile(StatusFile.CHANGE);
                 Path pathSourceFile = sourceFile.toPath();
                 Path pathCompareFile = compareFiles.get(getIndex(sourceFile.getName(), compareFiles)).toPath();
-                fileDifference.setDifferences(diffFiles(pathSourceFile, pathCompareFile));
-                listOfFileNameWithDifference.add(fileDifference);
+                List<String> list0fFileDifference = diffFiles(pathSourceFile, pathCompareFile);
+                listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.CHANGE, list0fFileDifference));
 
             } else {
-                FileDifference fileDifference = new FileDifference();
-                fileDifference.setFileName(sourceFile.getName());
-                fileDifference.setStatusFile(StatusFile.DELETE);
-                listOfFileNameWithDifference.add(fileDifference);
+                listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.DELETE));
             }
         }
         for (File compareFile : compareFiles) {
             if (!fileNameExistInListOfFile(compareFile, sourceFiles)) {
-                FileDifference fileDifference = new FileDifference();
-                fileDifference.setFileName(compareFile.getName());
-                fileDifference.setStatusFile(StatusFile.NEW);
-                listOfFileNameWithDifference.add(fileDifference);
+                listOfFileNameWithDifference.add(new FileDifference(compareFile.getName(), StatusFile.NEW));
             }
         }
         return listOfFileNameWithDifference;

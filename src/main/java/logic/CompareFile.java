@@ -56,20 +56,7 @@ public class CompareFile implements FileStrategy {
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
 
             List<FileDifference> fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
-            /* testing
-            for (FileDifference cos : fileDifferences ) {
-                System.out.println("Plik: " +  cos.getFileName());
-                if (cos.getStatusFile() == StatusFile.CHANGE) {
-                    System.out.println("Ilość zmiany w pliku: " + cos.getDifferences().size());
-                } else if (cos.getStatusFile() == StatusFile.DELETE) {
-                    System.out.println("Usunięty plik");
-                } else if (cos.getStatusFile() == StatusFile.NEW) {
-                    System.out.println("Nowy plik");
-                }
-                System.out.println("---------------------");
-            }
-            System.out.println();
-            */
+
         } catch (IOException ioException) {
             System.out.println(ioException.fillInStackTrace());
         }
@@ -92,21 +79,18 @@ public class CompareFile implements FileStrategy {
                 listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.DELETE));
             }
         }
-        for (File compareFile : compareFiles) {
-            if (!fileNameExistInListOfFile(compareFile, sourceFiles)) {
-                listOfFileNameWithDifference.add(new FileDifference(compareFile.getName(), StatusFile.NEW));
-            }
+        Iterator<File> compareFileIterator = compareFiles.iterator();
+        while (compareFileIterator.hasNext() && fileNameExistInListOfFile(compareFileIterator.next(), sourceFiles)) {
+            listOfFileNameWithDifference.add(new FileDifference(compareFileIterator.next().getName(), StatusFile.NEW));
         }
         return listOfFileNameWithDifference;
     }
 
     private boolean fileNameExistInListOfFile(File file, List<File> listOfFiles) {
         Iterator<File> listOfFilesIterator = listOfFiles.iterator();
-        do {
-            if (listOfFilesIterator.next().getName().equals(file.getName())) {
-                return true;
-            }
-        } while (listOfFilesIterator.hasNext());
+        while (listOfFilesIterator.hasNext() && listOfFilesIterator.next().getName().equals(file.getName())){
+            return true;
+        }
         return false;
     }
 
@@ -125,12 +109,9 @@ public class CompareFile implements FileStrategy {
         List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
         List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
         List<String> diff = new ArrayList<>();
-        Iterator<String> lineIterator = firstFileContent.iterator();
-        while (lineIterator.hasNext()) {
-            if (!secondFileContent.contains(lineIterator.next())) {
-                diff.add(lineIterator.next());
-            }
-        }
+        firstFileContent.stream()
+                .filter(line -> !secondFileContent.contains(line))
+                .forEach(lineNotExist -> diff.add(lineNotExist));
         return diff;
     }
 

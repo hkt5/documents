@@ -28,8 +28,9 @@ public class ListOfFilesFromPathCreator implements ListFileCreator {
     }
 
     private void readPath(File file) throws Exception {
-        if (!file.exists()) throw new Exception("Path to file or directory not found");
-        if (file.isDirectory()) {
+        if (!file.exists()) {
+            throw new Exception("Path to file or directory not found");
+        } else if (file.isDirectory()) {
             readDirectory(file);
         } else {
             listOfFiles.add(file);

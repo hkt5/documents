@@ -1,5 +1,7 @@
 package logic.unzip;
 
+import data.ZipSettingData;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,7 +21,11 @@ public class UnzipFileToDirectoryController implements UnzipFileToDirectoryable{
         while (zipEntry != null) {
             boolean isDirectory = isDirectory(zipEntry);
             Path newPath = zipSlipProtect(zipEntry, target);
-            copyFiles(isDirectory, newPath, zis);
+            ZipSettingData zipSettingData = new ZipSettingData();
+            zipSettingData.setDirectory(isDirectory);
+            zipSettingData.setNewPath(newPath);
+            zipSettingData.setZis(zis);
+            copyFiles(zipSettingData);
             zipEntry = zis.getNextEntry();
         }
         zis.closeEntry();
@@ -33,14 +39,14 @@ public class UnzipFileToDirectoryController implements UnzipFileToDirectoryable{
         }
     }
 
-    private void copyFiles(Boolean isDirectory, Path newPath, ZipInputStream zis) throws IOException {
-        if (isDirectory) {
-            Files.createDirectories(newPath);
-        } else if (newPath.getParent() != null) {
-            if (Files.notExists(newPath.getParent())) {
-                Files.createDirectories(newPath.getParent());
+    private void copyFiles(ZipSettingData zipSettingData) throws IOException {
+        if (zipSettingData.getDirectory()) {
+            Files.createDirectories(zipSettingData.getNewPath());
+        } else if (zipSettingData.getNewPath().getParent() != null) {
+            if (Files.notExists(zipSettingData.getNewPath().getParent())) {
+                Files.createDirectories(zipSettingData.getNewPath().getParent());
             }
-            Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(zipSettingData.getZis(), zipSettingData.getNewPath(), StandardCopyOption.REPLACE_EXISTING);
         }
     }
 

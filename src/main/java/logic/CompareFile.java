@@ -68,21 +68,24 @@ public class CompareFile implements FileStrategy {
 
     private List<FileDifference> getListOfDifferences(List<File> sourceFiles, List<File> compareFiles ) throws IOException {
         List<FileDifference> listOfFileNameWithDifference = new ArrayList<>();
-        for (File sourceFile : sourceFiles) {
-            if (fileNameExistInListOfFile(sourceFile, compareFiles)) {
-                Path pathSourceFile = sourceFile.toPath();
-                Path pathCompareFile = compareFiles.get(getIndex(sourceFile.getName(), compareFiles)).toPath();
-                List<String> list0fFileDifference = diffFiles(pathSourceFile, pathCompareFile);
-                listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.CHANGE, list0fFileDifference));
 
-            } else {
-                listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.DELETE));
-            }
-        }
-        Iterator<File> compareFileIterator = compareFiles.iterator();
-        while (compareFileIterator.hasNext() && fileNameExistInListOfFile(compareFileIterator.next(), sourceFiles)) {
-            listOfFileNameWithDifference.add(new FileDifference(compareFileIterator.next().getName(), StatusFile.NEW));
-        }
+        sourceFiles.stream()
+                .filter(sourceFile -> fileNameExistInListOfFile(sourceFile, compareFiles))
+                .forEach(sourceFile -> {
+                    Path pathSourceFile = sourceFile.toPath();
+                    Path pathCompareFile = compareFiles.get(getIndex(sourceFile.getName(), compareFiles)).toPath();
+                    List<String> list0fFileDifference = diffFiles(pathSourceFile, pathCompareFile);
+                    listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.CHANGE, list0fFileDifference));
+                });
+
+        sourceFiles.stream()
+                .filter(sourceFile -> !fileNameExistInListOfFile(sourceFile, compareFiles))
+                .forEach(sourceFile -> listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.DELETE)));
+
+        compareFiles.stream()
+                .filter(fileCompareFiles -> fileNameExistInListOfFile(fileCompareFiles, sourceFiles))
+                .forEach(fileCompareFiles -> listOfFileNameWithDifference.add(new FileDifference(fileCompareFiles.getName(), StatusFile.NEW)));
+
         return listOfFileNameWithDifference;
     }
 
@@ -105,13 +108,17 @@ public class CompareFile implements FileStrategy {
         return index;
     }
 
-    private static List<String> diffFiles(Path firstFile, Path secondFile) throws IOException {
-        List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
-        List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
+    private static List<String> diffFiles(Path firstFile, Path secondFile) {
         List<String> diff = new ArrayList<>();
-        firstFileContent.stream()
-                .filter(line -> !secondFileContent.contains(line))
-                .forEach(lineNotExist -> diff.add(lineNotExist));
+        try {
+            List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
+            List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
+            firstFileContent.stream()
+                    .filter(line -> !secondFileContent.contains(line))
+                    .forEach(lineNotExist -> diff.add(lineNotExist));
+        } catch (IOException ioException) {
+            System.out.println(ioException);
+        }
         return diff;
     }
 

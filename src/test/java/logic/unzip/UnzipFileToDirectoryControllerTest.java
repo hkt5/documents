@@ -50,7 +50,8 @@ class UnzipFileToDirectoryControllerTest {
         List<String> listOfUnzipFileName = listOfFilesFromPathCreator.getListOfFile(destinationDirectory.toString()).stream()
                 .map(file -> file.getName())
                 .collect(Collectors.toList());
-        assertEquals(controlListFile, listOfUnzipFileName, "Unzip file should the same");
+
+        assertEquals(controlListFile.stream().sorted().collect(Collectors.toList()), listOfUnzipFileName.stream().sorted().collect(Collectors.toList()), "Unzip file should the same");
         assertEquals(7, listOfUnzipFileName.size(), "Should return 7 files");
     }
 }

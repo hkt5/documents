@@ -55,8 +55,6 @@ public class CopyFile implements FileStrategy {
         return resultData;
     }
 
-
-
     private boolean copyFile(File file, File destination) {
         try {
             FileUtils.copyFileToDirectory(file, destination);

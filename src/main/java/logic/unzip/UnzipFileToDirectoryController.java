@@ -42,10 +42,10 @@ public class UnzipFileToDirectoryController implements UnzipFileToDirectoryable{
     private void copyFiles(ZipSettingData zipSettingData) throws IOException {
         if (zipSettingData.getDirectory()) {
             Files.createDirectories(zipSettingData.getNewPath());
+        } else if (zipSettingData.getNewPath().getParent() != null && Files.notExists(zipSettingData.getNewPath().getParent())) {
+            Files.createDirectories(zipSettingData.getNewPath().getParent());
+            Files.copy(zipSettingData.getZis(), zipSettingData.getNewPath(), StandardCopyOption.REPLACE_EXISTING);
         } else if (zipSettingData.getNewPath().getParent() != null) {
-            if (Files.notExists(zipSettingData.getNewPath().getParent())) {
-                Files.createDirectories(zipSettingData.getNewPath().getParent());
-            }
             Files.copy(zipSettingData.getZis(), zipSettingData.getNewPath(), StandardCopyOption.REPLACE_EXISTING);
         }
     }

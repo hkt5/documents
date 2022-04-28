@@ -10,6 +10,7 @@ public class ExecutableDocuments {
     private static final int USER_DO_NOT_USE_CONSOLE = 0;
     private static final int USER_OPTION_IS_COPY_FILE = 1;
     private static final int USER_OPTION_IS_READ_FILE = 2;
+    private static final int USER_OPTION_IS_COMPARE_FILE = 3;
     private UserInterfaceController userInterfaceController;
     private ProgramArgumentsController programArgumentsController;
     private UserOptions userOptions;
@@ -24,7 +25,6 @@ public class ExecutableDocuments {
         this.fileStrategy = null;
         this.getNumberFromUser = new GetNumberFromUser();
         this.userInterface = new UserInterface();
-
     }
 
     public static void main(String[] args)  {
@@ -38,8 +38,13 @@ public class ExecutableDocuments {
         } else {
             userOptions.setStrategy(userInterfaceController.getUserDecision(getNumberFromUser));
         }
-        if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) fileStrategy = new CopyFile();
-        else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE) fileStrategy = new ReadFile();
+        if (userOptions.getStrategy() == USER_OPTION_IS_COPY_FILE) {
+            fileStrategy = new CopyFile();
+        } else if (userOptions.getStrategy() == USER_OPTION_IS_READ_FILE)  {
+            fileStrategy = new ReadFile();
+        } else if (userOptions.getStrategy() == USER_OPTION_IS_COMPARE_FILE) {
+            fileStrategy = new CompareFile();
+        }
         // for test
         ResultData resultData = fileStrategy.perform();
         userInterface.getMessage(resultData.getResultMassage());

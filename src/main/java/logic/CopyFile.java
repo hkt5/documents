@@ -3,9 +3,7 @@ package logic;
 import data.ResultData;
 import org.apache.commons.io.FileUtils;
 import ui.MessageReturnable;
-import ui.Messageble;
 import ui.ReturnUserInterface;
-import ui.UserInterface;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,8 +54,6 @@ public class CopyFile implements FileStrategy {
         resultData.setResultMassage(FILES_COPIED);
         return resultData;
     }
-
-
 
     private boolean copyFile(File file, File destination) {
         try {
@@ -117,8 +113,7 @@ public class CopyFile implements FileStrategy {
         }
     }
 
-    private static String getFileChecksum(MessageDigest digest, File file) throws IOException
-    {
+    private static String getFileChecksum(MessageDigest digest, File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
         byte[] byteArray = new byte[1024];
         int bytesCount = 0;
@@ -129,8 +124,7 @@ public class CopyFile implements FileStrategy {
 
         byte[] bytes = digest.digest();
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < bytes.length; i++)
-        {
+        for(int i = 0; i < bytes.length; i++) {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();

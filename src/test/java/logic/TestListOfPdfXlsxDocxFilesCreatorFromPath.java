@@ -1,6 +1,6 @@
 package logic;
 
-import logic.ListOfFileCreatorFromPath;
+import logic.ListFileCreator.ListOfPdfXlsxDocxFilesFromPathCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,13 +14,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class TestListOfFileCreatorFromPath {
+class TestListOfPdfXlsxDocxFilesCreatorFromPath {
 
-    private ListOfFileCreatorFromPath listOfFileCreatorFromPath;
+    private ListOfPdfXlsxDocxFilesFromPathCreator listOfFileCreatorFromPath;
 
     @BeforeEach
     public void setup(){
-        listOfFileCreatorFromPath = new ListOfFileCreatorFromPath();
+        listOfFileCreatorFromPath = new ListOfPdfXlsxDocxFilesFromPathCreator();
     }
 
     @Test

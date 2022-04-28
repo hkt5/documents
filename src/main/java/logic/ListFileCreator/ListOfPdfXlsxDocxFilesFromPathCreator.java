@@ -1,4 +1,4 @@
-package logic;
+package logic.ListFileCreator;
 
 import ui.Messageble;
 import ui.UserInterface;
@@ -6,13 +6,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListOfFileCreatorFromPath implements ListFileCreator {
+public class ListOfPdfXlsxDocxFilesFromPathCreator implements ListFileCreator {
 
     private static final int GREATER_THAN_ZERO = 0;
     private Messageble messageble;
     private List<File> listOfFiles;
 
-    public ListOfFileCreatorFromPath() {
+    public ListOfPdfXlsxDocxFilesFromPathCreator() {
         this.messageble = new UserInterface();
         this.listOfFiles = new ArrayList<>();
     }
@@ -73,6 +73,5 @@ public class ListOfFileCreatorFromPath implements ListFileCreator {
                 return Boolean.FALSE;
         }
     }
-
 
 }

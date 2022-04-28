@@ -60,11 +60,11 @@ public class CompareFile implements FileStrategy {
 
         } catch (IOException ioException) {
             System.out.println(ioException.fillInStackTrace());
+        } finally {
+            ResultData resultData = new ResultData();
+            resultData.setResultMassage("test");
+            return resultData;
         }
-
-        ResultData resultData = new ResultData();
-        resultData.setResultMassage("test");
-        return resultData;
     }
 
     private List<FileDifference> getListOfDifferences(List<File> sourceFiles, List<File> compareFiles ) throws IOException {
@@ -104,10 +104,8 @@ public class CompareFile implements FileStrategy {
     private int getIndex(String fileName, List<File> listFiles) {
         int index = -1;
         for (int i = 0; i < listFiles.size(); i++) {
-            if(listFiles.get(i).getName().equals(fileName)) {
-                index = i;
-                break;
-            }
+            index = i;
+            if (listFiles.get(i).getName().equals(fileName)) break;
         }
         return index;
     }

@@ -1,75 +1,17 @@
 package data;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Set;
-
 public class MetaData {
-    private String keywords;
-    private String author;
     private String creator;
-    private String producer;
+    private String keywords;
     private String subject;
     private String title;
-    private String trapped;
-    private Calendar creationDate;
-    private Calendar ModificationDate;
-    private Set<String> metadataKeys;
-
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getTrapped() {
-        return trapped;
-    }
-
-    public Calendar getCreationDate() {
-        return creationDate;
-    }
-
-    public Calendar getModificationDate() {
-        return ModificationDate;
-    }
-
-    public Set<String> getMetadataKeys() {
-        return metadataKeys;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public void setCreator(String creator) {
         this.creator = creator;
     }
 
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public void setSubject(String subject) {
@@ -80,19 +22,19 @@ public class MetaData {
         this.title = title;
     }
 
-    public void setTrapped(String trapped) {
-        this.trapped = trapped;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setCreationDate(Calendar creationDate) {
-        this.creationDate = creationDate;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setModificationDate(Calendar modificationDate) {
-        ModificationDate = modificationDate;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setMetadataKeys(Set<String> metadataKeys) {
-        this.metadataKeys = metadataKeys;
+    public String getTitle() {
+        return title;
     }
 }

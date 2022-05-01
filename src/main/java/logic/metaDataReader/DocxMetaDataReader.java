@@ -1,21 +1,19 @@
 package logic.metaDataReader;
 
+import data.DocxMetaData;
 import data.MetaData;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class DocxMetaDataReader implements MetaDataReadable{
     @Override
-    public Map<String, String> getMataData(File file) {
-        Map<String, String> mapMetaData = new LinkedHashMap<>();
+    public MetaData getMataData(File file) {
+        DocxMetaData metaData = new DocxMetaData();
         try {
             PDDocument doc = PDDocument.load(file);
             PDDocumentInformation pdd = doc.getDocumentInformation();
-            MetaData metaData = new MetaData();
             metaData.setAuthor(pdd.getAuthor());
             metaData.setCreationDate(pdd.getCreationDate());
             metaData.setCreator(pdd.getCreator());
@@ -29,7 +27,7 @@ public class DocxMetaDataReader implements MetaDataReadable{
         } catch (IOException ioException) {
             System.out.println(ioException);
         } finally {
-            return mapMetaData;
+            return metaData;
         }
     }
 }

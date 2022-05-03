@@ -1,35 +1,35 @@
 package logic.metaDataReader;
 
-import data.MetaData;
-import data.PdfMetaData;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class PdfMetaDataReader implements MetaDataReadable{
     @Override
-    public MetaData getMataData(File file) {
-        PdfMetaData pdfMetaData = new PdfMetaData();
+    public Map<String, Optional<Object>> getMataData(File file) {
+        HashMap<String, Optional<Object>> metaData = new HashMap<>();
         try {
             PDDocument doc = PDDocument.load(file);
             PDDocumentInformation pdd = doc.getDocumentInformation();
-            pdfMetaData.setAuthor(pdd.getAuthor());
-            pdfMetaData.setCOSObject(pdd.getCOSObject());
-            pdfMetaData.setCreationDate(pdd.getCreationDate());
-            pdfMetaData.setCreator(pdd.getCreator());
-            pdfMetaData.setKeywords(pdd.getKeywords());
-            pdfMetaData.setMetadataKeys(pdd.getMetadataKeys());
-            pdfMetaData.setModificationDate(pdd.getModificationDate());
-            pdfMetaData.setProducer(pdd.getProducer());
-            pdfMetaData.setSubject(pdd.getSubject());
-            pdfMetaData.setTitle(pdd.getTitle());
-            pdfMetaData.setTrapped(pdd.getTrapped());
+            metaData.put("Author", Optional.ofNullable(pdd.getAuthor()));
+            metaData.put("COSObject", Optional.ofNullable(pdd.getCOSObject()));
+            metaData.put("CreationDate", Optional.ofNullable(pdd.getCreationDate()));
+            metaData.put("Creator", Optional.ofNullable(pdd.getCreator()));
+            metaData.put("KeyWords", Optional.ofNullable(pdd.getKeywords()));
+            metaData.put("MetadataKeys", Optional.ofNullable(pdd.getMetadataKeys()));
+            metaData.put("ModificationDate", Optional.ofNullable(pdd.getModificationDate()));
+            metaData.put("Producer", Optional.ofNullable(pdd.getProducer()));
+            metaData.put("Subject", Optional.ofNullable(pdd.getSubject()));
+            metaData.put("Title", Optional.ofNullable(pdd.getTitle()));
+            metaData.put("Trapped", Optional.ofNullable(pdd.getTrapped()));
         } catch (IOException ioException) {
             System.out.println(ioException);
         } finally {
-            return pdfMetaData;
+            return metaData;
         }
     }
 }

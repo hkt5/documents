@@ -1,9 +1,9 @@
 package logic.metaDataReader;
 
-import data.MetaData;
-
 import java.io.File;
+import java.util.Map;
+import java.util.Optional;
 
 public interface MetaDataReadable {
-    MetaData getMataData(File file);
+    Map<String, Optional<Object>> getMataData(File file);
 }

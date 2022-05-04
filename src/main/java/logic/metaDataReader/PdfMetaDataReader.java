@@ -27,7 +27,7 @@ public class PdfMetaDataReader implements MetaDataReadable{
             metaData.put("Title", Optional.ofNullable(pdd.getTitle()));
             metaData.put("Trapped", Optional.ofNullable(pdd.getTrapped()));
         } catch (IOException ioException) {
-            System.out.println(ioException);
+            System.out.println("PdfMetaDataReader - " + ioException);
         } finally {
             return metaData;
         }

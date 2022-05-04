@@ -4,6 +4,8 @@ import data.FileDifference;
 import data.ResultData;
 import data.StatusFile;
 import logic.ListFileCreator.ListOfFilesFromPathCreator;
+import logic.metaDataDifferenceFinder.MetaDataDifferenceFinder;
+import logic.metaDataReader.DocxMetaDataReader;
 import logic.unzip.UnzipFileToDirectoryController;
 import logic.unzip.UnzipFileToDirectoryable;
 import ui.Messageble;
@@ -14,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class CompareFile implements FileStrategy {
     private final String PDF_FILE = "pdf";
@@ -48,6 +52,7 @@ public class CompareFile implements FileStrategy {
     @Override
     public ResultData perform() {
         List<FileDifference> fileDifferences;
+        Map<String, Object> diff;
         try {
             Path tempDirSource = Files.createTempDirectory("");
             Path tempDirToCompare = Files.createTempDirectory("");
@@ -57,10 +62,16 @@ public class CompareFile implements FileStrategy {
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
 
             fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
-
+            DocxMetaDataReader docxMetaDataReader = new DocxMetaDataReader();
+            Map<String, Optional<Object>> aaa = docxMetaDataReader.getMataData(sourceFile);
+            Map<String, Optional<Object>> bbb = docxMetaDataReader.getMataData(fileToCompare);
+            MetaDataDifferenceFinder metaDataDifferenceFinder = new MetaDataDifferenceFinder();
+            diff = metaDataDifferenceFinder.getMetaDataDifference(aaa, bbb);
+            System.out.println("dd");
         } catch (IOException ioException) {
-            System.out.println(ioException.fillInStackTrace());
+            System.out.println(ioException);
         } finally {
+
             ResultData resultData = new ResultData();
             resultData.setResultMassage("test");
             return resultData;

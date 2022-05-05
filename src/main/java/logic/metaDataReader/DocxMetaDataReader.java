@@ -31,7 +31,6 @@ public class DocxMetaDataReader implements MetaDataReadable{
         metaData.put("Revision", Optional.ofNullable(coreProp.getRevision()));
         metaData.put("Subject", Optional.ofNullable(coreProp.getSubject()));
         metaData.put("Title", Optional.ofNullable(coreProp.getTitle()));
-        metaData.put("UnderlyingProperties", Optional.ofNullable(coreProp.getUnderlyingProperties()));
         return metaData;
     }
 }

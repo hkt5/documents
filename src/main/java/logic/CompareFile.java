@@ -6,6 +6,9 @@ import data.StatusFile;
 import logic.ListFileCreator.ListOfFilesFromPathCreator;
 import logic.metaDataDifferenceFinder.MetaDataDifferenceFinder;
 import logic.metaDataReader.DocxMetaDataReader;
+import logic.metaDataReader.MetaDataReadable;
+import logic.metaDataReader.PdfMetaDataReader;
+import logic.metaDataReader.XlsxMetaDataReader;
 import logic.unzip.UnzipFileToDirectoryController;
 import logic.unzip.UnzipFileToDirectoryable;
 import ui.Messageble;
@@ -62,12 +65,12 @@ public class CompareFile implements FileStrategy {
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
 
             fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
-            DocxMetaDataReader docxMetaDataReader = new DocxMetaDataReader();
-            Map<String, Optional<Object>> aaa = docxMetaDataReader.getMataData(sourceFile);
-            Map<String, Optional<Object>> bbb = docxMetaDataReader.getMataData(fileToCompare);
+            MetaDataReadable metaDataStrategy = getStrategyToReadMetaData(sourceFile);
+            Map<String, Optional<Object>> mataDataFromSourceFile = metaDataStrategy.getMataData(sourceFile);
+            Map<String, Optional<Object>> mataDataFromCompareFile = metaDataStrategy.getMataData(fileToCompare);
             MetaDataDifferenceFinder metaDataDifferenceFinder = new MetaDataDifferenceFinder();
-            diff = metaDataDifferenceFinder.getMetaDataDifference(aaa, bbb);
-            System.out.println("dd");
+            diff = metaDataDifferenceFinder.getMetaDataDifference(mataDataFromSourceFile, mataDataFromCompareFile);
+
         } catch (IOException ioException) {
             System.out.println(ioException);
         } finally {
@@ -162,5 +165,24 @@ public class CompareFile implements FileStrategy {
         String fileName = file.toString();
         int index = fileName.lastIndexOf('.');
         return fileName.substring(index + 1);
+    }
+
+    private MetaDataReadable getStrategyToReadMetaData(File file) {
+        String extension = getExtension(file);
+        MetaDataReadable metaDataReadable = null;
+        switch (extension) {
+            case "pdf":
+                metaDataReadable = new PdfMetaDataReader();
+                break;
+            case "docx":
+                metaDataReadable = new DocxMetaDataReader();
+                break;
+            case "xlsx":
+                metaDataReadable = new XlsxMetaDataReader();
+                break;
+            default:
+        }
+
+        return metaDataReadable;
     }
 }

@@ -1,5 +1,8 @@
 package logic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import data.FileDiffJsonData;
 import data.FileDifference;
 import data.ResultData;
 import data.StatusFile;
@@ -17,10 +20,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CompareFile implements FileStrategy {
     private final String PDF_FILE = "pdf";
@@ -56,6 +56,7 @@ public class CompareFile implements FileStrategy {
     public ResultData perform() {
         List<FileDifference> fileDifferences;
         Map<String, Object> diff;
+        String jsonStringWithDifference = "";
         try {
             Path tempDirSource = Files.createTempDirectory("");
             Path tempDirToCompare = Files.createTempDirectory("");
@@ -63,20 +64,17 @@ public class CompareFile implements FileStrategy {
             unzipFileToDirectoryable.unzip(fileToCompare.toPath(), tempDirToCompare);
             List<File> sourceFiles = new ListOfFilesFromPathCreator().getListOfFile(tempDirSource.toString());
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
-
             fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
             MetaDataReadable metaDataStrategy = getStrategyToReadMetaData(sourceFile);
-            Map<String, Optional<Object>> mataDataFromSourceFile = metaDataStrategy.getMataData(sourceFile);
-            Map<String, Optional<Object>> mataDataFromCompareFile = metaDataStrategy.getMataData(fileToCompare);
             MetaDataDifferenceFinder metaDataDifferenceFinder = new MetaDataDifferenceFinder();
-            diff = metaDataDifferenceFinder.getMetaDataDifference(mataDataFromSourceFile, mataDataFromCompareFile);
-
+            diff = metaDataDifferenceFinder.getMetaDataDifference(metaDataStrategy.getMataData(sourceFile), metaDataStrategy.getMataData(fileToCompare));
+            jsonStringWithDifference = createJson(fileDifferences, diff);
         } catch (IOException ioException) {
             System.out.println(ioException);
         } finally {
-
             ResultData resultData = new ResultData();
-            resultData.setResultMassage("test");
+            resultData.setResultMassage("compare-success");
+            resultData.setResultData(jsonStringWithDifference);
             return resultData;
         }
     }
@@ -184,5 +182,15 @@ public class CompareFile implements FileStrategy {
         }
 
         return metaDataReadable;
+    }
+
+    private String createJson(List<FileDifference> fileDifferences, Map<String, Object> diff) throws JsonProcessingException {
+        FileDiffJsonData fileDiffJsonData = new FileDiffJsonData.Builder()
+                .compareDate(new Date())
+                .listFileDifference(fileDifferences)
+                .mapOfDiffInMetaData(diff)
+                .build();
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(fileDiffJsonData);
     }
 }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import data.FileDiffJsonData;
 import data.FileDifference;
 import data.ResultData;
-import data.StatusFile;
 import logic.ListFileCreator.ListOfFilesFromPathCreator;
+import logic.differenceInFilesReader.DifferenceInXmlFilesReader;
 import logic.metaDataDifferenceFinder.MetaDataDifferenceFinder;
 import logic.metaDataReader.DocxMetaDataReader;
 import logic.metaDataReader.MetaDataReadable;
@@ -17,7 +17,6 @@ import logic.unzip.UnzipFileToDirectoryable;
 import ui.Messageble;
 import ui.UserInterface;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -33,7 +32,6 @@ public class CompareFile implements FileStrategy {
     private UnzipFileToDirectoryable unzipFileToDirectoryable;
     private File sourceFile;
     private File fileToCompare;
-    List<FileDifference> listOfFileNameWithDifference;
 
     public CompareFile(){
         this.messageble = new UserInterface();
@@ -64,7 +62,7 @@ public class CompareFile implements FileStrategy {
             unzipFileToDirectoryable.unzip(fileToCompare.toPath(), tempDirToCompare);
             List<File> sourceFiles = new ListOfFilesFromPathCreator().getListOfFile(tempDirSource.toString());
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
-            fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
+            fileDifferences = new DifferenceInXmlFilesReader().getListOfDifferences(sourceFiles, filesToCompare);
             MetaDataReadable metaDataStrategy = getStrategyToReadMetaData(sourceFile);
             MetaDataDifferenceFinder metaDataDifferenceFinder = new MetaDataDifferenceFinder();
             diff = metaDataDifferenceFinder.getMetaDataDifference(metaDataStrategy.getMataData(sourceFile), metaDataStrategy.getMataData(fileToCompare));
@@ -77,63 +75,6 @@ public class CompareFile implements FileStrategy {
             resultData.setResultData(jsonStringWithDifference);
             return resultData;
         }
-    }
-
-    private List<FileDifference> getListOfDifferences(List<File> sourceFiles, List<File> compareFiles ) throws IOException {
-        listOfFileNameWithDifference = new ArrayList<>();
-
-        sourceFiles.stream()
-                .filter(sourceFile -> fileNameExistInListOfFile(sourceFile, compareFiles))
-                .forEach(sourceFile -> {
-                    Path pathSourceFile = sourceFile.toPath();
-                    Path pathCompareFile = compareFiles.get(getIndex(sourceFile.getName(), compareFiles)).toPath();
-                    List<String> list0fFileDifference = diffFiles(pathSourceFile, pathCompareFile);
-                    addFileToDifferenceListOrSkip(sourceFile.getName(),list0fFileDifference);
-                });
-
-        sourceFiles.stream()
-                .filter(sourceFile -> !fileNameExistInListOfFile(sourceFile, compareFiles))
-                .forEach(sourceFile -> listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.DELETE)));
-
-        compareFiles.stream()
-                .filter(fileCompareFiles -> !fileNameExistInListOfFile(fileCompareFiles, sourceFiles))
-                .forEach(fileCompareFiles -> listOfFileNameWithDifference.add(new FileDifference(fileCompareFiles.getName(), StatusFile.NEW)));
-
-        return listOfFileNameWithDifference;
-    }
-
-    private boolean fileNameExistInListOfFile(File file, List<File> listOfFiles) {
-        return listOfFiles.stream()
-                .anyMatch(fileInList -> fileInList.getName().equals(file.getName()));
-    }
-
-    private void addFileToDifferenceListOrSkip(String fileName, List<String> list0fFileDifference) {
-        if (list0fFileDifference.size() > 0) {
-            listOfFileNameWithDifference.add(new FileDifference(fileName, StatusFile.CHANGE, list0fFileDifference));
-        }
-    }
-
-    private int getIndex(String fileName, List<File> listFiles) {
-        int index = -1;
-        for (int i = 0; i < listFiles.size(); i++) {
-            index = i;
-            if (listFiles.get(i).getName().equals(fileName)) break;
-        }
-        return index;
-    }
-
-    private static List<String> diffFiles(Path firstFile, Path secondFile) {
-        List<String> diff = new ArrayList<>();
-        try {
-            List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
-            List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
-            firstFileContent.stream()
-                    .filter(line -> !secondFileContent.contains(line))
-                    .forEach(lineNotExist -> diff.add(lineNotExist));
-        } catch (IOException ioException) {
-            System.out.println(ioException);
-        }
-        return diff;
     }
 
     private void getFilesFromUser() {

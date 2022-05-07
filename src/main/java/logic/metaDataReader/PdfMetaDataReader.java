@@ -19,7 +19,7 @@ public class PdfMetaDataReader implements MetaDataReadable{
             metaData.put("COSObject", Optional.ofNullable(pdd.getCOSObject()));
             metaData.put("CreationDate", Optional.ofNullable(pdd.getCreationDate()));
             metaData.put("Creator", Optional.ofNullable(pdd.getCreator()));
-            metaData.put("KeyWords", Optional.ofNullable(pdd.getKeywords()));
+            metaData.put("Keywords", Optional.ofNullable(pdd.getKeywords()));
             metaData.put("MetadataKeys", Optional.ofNullable(pdd.getMetadataKeys()));
             metaData.put("ModificationDate", Optional.ofNullable(pdd.getModificationDate()));
             metaData.put("Producer", Optional.ofNullable(pdd.getProducer()));

@@ -32,7 +32,7 @@ class XlsxMetaDataReaderTest {
     void getMataDataFromXlsxTest(@TempDir Path tempDir) throws IOException {
         Path xlsxFile = Files.createFile(tempDir.resolve("test.xlsx"));
         String testKeyWords = "Test keyword";
-        tempFileCreator.createTempDocxFile(xlsxFile);
+        tempFileCreator.createTempXlsXFile(xlsxFile);
         FileInputStream fileInputStream = new FileInputStream(xlsxFile.toFile());
         XSSFWorkbook xlsxSetMetadata = new XSSFWorkbook(fileInputStream);
         POIXMLProperties props = xlsxSetMetadata.getProperties();

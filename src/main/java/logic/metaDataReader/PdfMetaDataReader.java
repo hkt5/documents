@@ -16,7 +16,6 @@ public class PdfMetaDataReader implements MetaDataReadable{
             PDDocument doc = PDDocument.load(file);
             PDDocumentInformation pdd = doc.getDocumentInformation();
             metaData.put("Author", Optional.ofNullable(pdd.getAuthor()));
-            metaData.put("COSObject", Optional.ofNullable(pdd.getCOSObject()));
             metaData.put("CreationDate", Optional.ofNullable(pdd.getCreationDate()));
             metaData.put("Creator", Optional.ofNullable(pdd.getCreator()));
             metaData.put("Keywords", Optional.ofNullable(pdd.getKeywords()));
@@ -26,6 +25,7 @@ public class PdfMetaDataReader implements MetaDataReadable{
             metaData.put("Subject", Optional.ofNullable(pdd.getSubject()));
             metaData.put("Title", Optional.ofNullable(pdd.getTitle()));
             metaData.put("Trapped", Optional.ofNullable(pdd.getTrapped()));
+            doc.close();
         } catch (IOException ioException) {
             System.out.println("PdfMetaDataReader - " + ioException);
         } finally {

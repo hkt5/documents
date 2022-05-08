@@ -10,7 +10,7 @@ public class FileDiffJsonData implements Serializable {
     private List<FileDifference> listFileDifference;
     private Map<String, Object> mapOfDiffInMetaData;
 
-    public static final class Builder {
+    public static class Builder {
         private Date compareDate;
         private List<FileDifference> listFileDifference;
         private Map<String, Object> mapOfDiffInMetaData;

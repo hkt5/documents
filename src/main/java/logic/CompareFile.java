@@ -2,6 +2,7 @@ package logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import data.FileDiffJsonData;
 import data.FileDifference;
 import data.ResultData;
@@ -52,7 +53,7 @@ public class CompareFile implements FileStrategy {
 
     @Override
     public ResultData perform() {
-        List<FileDifference> fileDifferences;
+        List<FileDifference> fileDifferences = new ArrayList<>();
         Map<String, Object> diff;
         String jsonStringWithDifference = "";
         try {
@@ -132,6 +133,7 @@ public class CompareFile implements FileStrategy {
                 .mapOfDiffInMetaData(diff)
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
         return objectMapper.writeValueAsString(fileDiffJsonData);
     }
 }

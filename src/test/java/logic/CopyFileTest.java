@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class CopyFileTest {
     private ListOfPdfXlsxDocxFilesFromPathCreator listOfFileCreatorFromPath;
 
-
     @BeforeEach
     public void setup() {
         listOfFileCreatorFromPath = new ListOfPdfXlsxDocxFilesFromPathCreator();

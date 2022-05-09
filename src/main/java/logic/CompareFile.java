@@ -1,19 +1,26 @@
 package logic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import data.FileDiffJsonData;
 import data.FileDifference;
 import data.ResultData;
-import data.StatusFile;
 import logic.ListFileCreator.ListOfFilesFromPathCreator;
+import logic.differenceInFilesReader.DifferenceInXmlFilesReader;
+import logic.metaDataDifferenceFinder.MetaDataDifferenceFinder;
+import logic.metaDataReader.DocxMetaDataReader;
+import logic.metaDataReader.MetaDataReadable;
+import logic.metaDataReader.PdfMetaDataReader;
+import logic.metaDataReader.XlsxMetaDataReader;
 import logic.unzip.UnzipFileToDirectoryController;
 import logic.unzip.UnzipFileToDirectoryable;
 import ui.Messageble;
 import ui.UserInterface;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CompareFile implements FileStrategy {
     private final String PDF_FILE = "pdf";
@@ -26,7 +33,6 @@ public class CompareFile implements FileStrategy {
     private UnzipFileToDirectoryable unzipFileToDirectoryable;
     private File sourceFile;
     private File fileToCompare;
-    List<FileDifference> listOfFileNameWithDifference;
 
     public CompareFile(){
         this.messageble = new UserInterface();
@@ -47,7 +53,9 @@ public class CompareFile implements FileStrategy {
 
     @Override
     public ResultData perform() {
-        List<FileDifference> fileDifferences;
+        List<FileDifference> fileDifferences = new ArrayList<>();
+        Map<String, Object> diff;
+        String jsonStringWithDifference = "";
         try {
             Path tempDirSource = Files.createTempDirectory("");
             Path tempDirToCompare = Files.createTempDirectory("");
@@ -55,73 +63,19 @@ public class CompareFile implements FileStrategy {
             unzipFileToDirectoryable.unzip(fileToCompare.toPath(), tempDirToCompare);
             List<File> sourceFiles = new ListOfFilesFromPathCreator().getListOfFile(tempDirSource.toString());
             List<File> filesToCompare = new ListOfFilesFromPathCreator().getListOfFile(tempDirToCompare.toString());
-
-            fileDifferences = getListOfDifferences(sourceFiles, filesToCompare);
-
-        } catch (IOException ioException) {
-            System.out.println(ioException.fillInStackTrace());
-        } finally {
-            ResultData resultData = new ResultData();
-            resultData.setResultMassage("test");
-            return resultData;
-        }
-    }
-
-    private List<FileDifference> getListOfDifferences(List<File> sourceFiles, List<File> compareFiles ) throws IOException {
-        listOfFileNameWithDifference = new ArrayList<>();
-
-        sourceFiles.stream()
-                .filter(sourceFile -> fileNameExistInListOfFile(sourceFile, compareFiles))
-                .forEach(sourceFile -> {
-                    Path pathSourceFile = sourceFile.toPath();
-                    Path pathCompareFile = compareFiles.get(getIndex(sourceFile.getName(), compareFiles)).toPath();
-                    List<String> list0fFileDifference = diffFiles(pathSourceFile, pathCompareFile);
-                    addFileToDifferenceListOrSkip(sourceFile.getName(),list0fFileDifference);
-                });
-
-        sourceFiles.stream()
-                .filter(sourceFile -> !fileNameExistInListOfFile(sourceFile, compareFiles))
-                .forEach(sourceFile -> listOfFileNameWithDifference.add(new FileDifference(sourceFile.getName(), StatusFile.DELETE)));
-
-        compareFiles.stream()
-                .filter(fileCompareFiles -> !fileNameExistInListOfFile(fileCompareFiles, sourceFiles))
-                .forEach(fileCompareFiles -> listOfFileNameWithDifference.add(new FileDifference(fileCompareFiles.getName(), StatusFile.NEW)));
-
-        return listOfFileNameWithDifference;
-    }
-
-    private boolean fileNameExistInListOfFile(File file, List<File> listOfFiles) {
-        return listOfFiles.stream()
-                .anyMatch(fileInList -> fileInList.getName().equals(file.getName()));
-    }
-
-    private void addFileToDifferenceListOrSkip(String fileName, List<String> list0fFileDifference) {
-        if (list0fFileDifference.size() > 0) {
-            listOfFileNameWithDifference.add(new FileDifference(fileName, StatusFile.CHANGE, list0fFileDifference));
-        }
-    }
-
-    private int getIndex(String fileName, List<File> listFiles) {
-        int index = -1;
-        for (int i = 0; i < listFiles.size(); i++) {
-            index = i;
-            if (listFiles.get(i).getName().equals(fileName)) break;
-        }
-        return index;
-    }
-
-    private static List<String> diffFiles(Path firstFile, Path secondFile) {
-        List<String> diff = new ArrayList<>();
-        try {
-            List<String> firstFileContent = Files.readAllLines(firstFile, Charset.defaultCharset());
-            List<String> secondFileContent = Files.readAllLines(secondFile, Charset.defaultCharset());
-            firstFileContent.stream()
-                    .filter(line -> !secondFileContent.contains(line))
-                    .forEach(lineNotExist -> diff.add(lineNotExist));
+            fileDifferences = new DifferenceInXmlFilesReader().getListOfDifferences(sourceFiles, filesToCompare);
+            MetaDataReadable metaDataStrategy = getStrategyToReadMetaData(sourceFile);
+            MetaDataDifferenceFinder metaDataDifferenceFinder = new MetaDataDifferenceFinder();
+            diff = metaDataDifferenceFinder.getMetaDataDifference(metaDataStrategy.getMataData(sourceFile), metaDataStrategy.getMataData(fileToCompare));
+            jsonStringWithDifference = createJson(fileDifferences, diff);
         } catch (IOException ioException) {
             System.out.println(ioException);
+        } finally {
+            ResultData resultData = new ResultData();
+            resultData.setResultMassage("compare-success");
+            resultData.setResultData(jsonStringWithDifference);
+            return resultData;
         }
-        return diff;
     }
 
     private void getFilesFromUser() {
@@ -151,5 +105,35 @@ public class CompareFile implements FileStrategy {
         String fileName = file.toString();
         int index = fileName.lastIndexOf('.');
         return fileName.substring(index + 1);
+    }
+
+    private MetaDataReadable getStrategyToReadMetaData(File file) {
+        String extension = getExtension(file);
+        MetaDataReadable metaDataReadable = null;
+        switch (extension) {
+            case "pdf":
+                metaDataReadable = new PdfMetaDataReader();
+                break;
+            case "docx":
+                metaDataReadable = new DocxMetaDataReader();
+                break;
+            case "xlsx":
+                metaDataReadable = new XlsxMetaDataReader();
+                break;
+            default:
+        }
+
+        return metaDataReadable;
+    }
+
+    private String createJson(List<FileDifference> fileDifferences, Map<String, Object> diff) throws JsonProcessingException {
+        FileDiffJsonData fileDiffJsonData = new FileDiffJsonData.Builder()
+                .compareDate(new Date())
+                .listFileDifference(fileDifferences)
+                .mapOfDiffInMetaData(diff)
+                .build();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+        return objectMapper.writeValueAsString(fileDiffJsonData);
     }
 }

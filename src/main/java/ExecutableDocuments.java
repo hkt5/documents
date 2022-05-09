@@ -48,5 +48,6 @@ public class ExecutableDocuments {
         // for test
         ResultData resultData = fileStrategy.perform();
         userInterface.getMessage(resultData.getResultMassage());
+        if (!resultData.getResultData().isEmpty()) userInterface.getMessage(resultData.getResultData());
     }
 }

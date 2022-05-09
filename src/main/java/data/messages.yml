@@ -27,3 +27,4 @@ file-is-not-based-on-xml: The file is not based on xml format
 add-first-file: You add the first file to be compared
 add-second-file: You add the second file to be compared
 compare-file-should-the-same-extension: Compare files should have the same extension
+compare-success: Compare files success!

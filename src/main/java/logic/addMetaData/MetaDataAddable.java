@@ -1,4 +1,4 @@
-package logic;
+package logic.addMetaData;
 
 import java.io.File;
 

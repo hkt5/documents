@@ -1,5 +1,6 @@
 package logic;
 
+import logic.addMetaData.AddMetaDataToPDF;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;

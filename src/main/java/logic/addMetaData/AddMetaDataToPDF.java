@@ -1,4 +1,4 @@
-package logic;
+package logic.addMetaData;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;

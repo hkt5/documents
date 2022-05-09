@@ -10,6 +10,7 @@ public class GetUserDecisionFromConsole implements GetDecision{
     private static final int USER_OPTION_IS_COPY_FILE = 1;
     private static final int USER_OPTION_IS_READ_FILE = 2;
     private static final int USER_OPTION_IS_COMPARE_FILE = 3;
+    private static final int USER_OPTION_IS_MACRO_EXTRACTOR = 4;
     private Messageble messageble;
     private KeyboardReader keyboardReader;
 
@@ -27,14 +28,16 @@ public class GetUserDecisionFromConsole implements GetDecision{
             displayMessageAboutWrongChoose(chooseNumberForUser);
         } while (chooseNumberForUser != USER_OPTION_IS_COPY_FILE &&
                 chooseNumberForUser != USER_OPTION_IS_READ_FILE &&
-                chooseNumberForUser != USER_OPTION_IS_COMPARE_FILE);
+                chooseNumberForUser != USER_OPTION_IS_COMPARE_FILE &&
+                chooseNumberForUser != USER_OPTION_IS_MACRO_EXTRACTOR);
         return chooseNumberForUser;
     }
 
     private void displayMessageAboutWrongChoose(int chooseNumberForUser) {
         if (chooseNumberForUser != USER_OPTION_IS_COPY_FILE &&
                 chooseNumberForUser != USER_OPTION_IS_READ_FILE &&
-                chooseNumberForUser != USER_OPTION_IS_COMPARE_FILE)  {
+                chooseNumberForUser != USER_OPTION_IS_COMPARE_FILE &&
+                chooseNumberForUser != USER_OPTION_IS_MACRO_EXTRACTOR)  {
             messageble.getMessage("bad-choose");
         }
     }

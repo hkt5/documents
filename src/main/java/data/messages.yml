@@ -29,6 +29,6 @@ add-first-file: You add the first file to be compared.
 add-second-file: You add the second file to be compared.
 compare-file-should-the-same-extension: Compare files should have the same extension.
 compare-success: Compare files success!
-you-can-extract-macro-from-docx-xlsx: You can extract macro only form .docx and .xlsx file. Try again.
+you-can-extract-macro-from-docx-xlsx: You can extract macro only form .docm and .xlsm file. Try again.
 file-doest-contain-marco: File doest contain macro.
 macro-has-been-extracted: Macro has been extracted form file.

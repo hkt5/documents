@@ -35,7 +35,7 @@ public class MacroExtractor implements FileStrategy{
         ResultData resultData = new ResultData();
         try {
             VBAMacroExtractor vbaMacroExtractor = new VBAMacroExtractor();
-            vbaMacroExtractor.extract(fileToExtractor, fileToExtractor);
+            vbaMacroExtractor.extract(fileToExtractor, new File(  fileToExtractor.getAbsolutePath()));
             resultData.setResultMassage("macro-has-been-extracted");
         } catch (IllegalArgumentException illegalArgumentException) {
             resultData.setResultMassage("file-doest-contain-marco");
@@ -56,7 +56,7 @@ public class MacroExtractor implements FileStrategy{
     private Boolean checkExtensionIsEndOfCharX(File file) {
         String fileName = file.toString();
         int index = fileName.toCharArray().length;
-        if (fileName.substring(index -1).equals("x")) {
+        if (fileName.substring(index -4).equals("docm") || fileName.substring(index -4).equals("xlsm")) {
             return true;
         } else {
             return false;

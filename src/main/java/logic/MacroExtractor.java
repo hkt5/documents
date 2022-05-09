@@ -4,7 +4,6 @@ import data.ResultData;
 import org.apache.poi.poifs.macros.VBAMacroExtractor;
 import ui.Messageble;
 import ui.UserInterface;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -32,10 +31,7 @@ public class MacroExtractor implements FileStrategy{
 
     @Override
     public ResultData perform() {
-        while (!checkExtensionIsEndOfCharX(fileToExtractor)) {
-            messageble.getMessage("you-can-extract-macro-from-docx-xlsx");
-            this.fileToExtractor = userInterfaceController.getPathFromUser(keyboardReader);
-        }
+        checkFile(fileToExtractor);
         ResultData resultData = new ResultData();
         try {
             VBAMacroExtractor vbaMacroExtractor = new VBAMacroExtractor();
@@ -48,6 +44,13 @@ public class MacroExtractor implements FileStrategy{
         }
 
         return new ResultData();
+    }
+
+    private void checkFile(File fileToExtractor) {
+        while (!checkExtensionIsEndOfCharX(fileToExtractor)) {
+            messageble.getMessage("you-can-extract-macro-from-docx-xlsx");
+            this.fileToExtractor = userInterfaceController.getPathFromUser(keyboardReader);
+        }
     }
 
     private Boolean checkExtensionIsEndOfCharX(File file) {

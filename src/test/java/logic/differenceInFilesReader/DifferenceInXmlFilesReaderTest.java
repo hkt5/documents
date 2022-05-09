@@ -1,18 +1,16 @@
 package logic.differenceInFilesReader;
 
-import net.bytebuddy.utility.RandomString;
+import data.FileDifference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -32,12 +30,15 @@ class DifferenceInXmlFilesReaderTest {
     void getListOfDifferencesTest(@TempDir Path tempDir) throws IOException {
         List<File> firstList = getTempListOfFile(tempDir, 3, true);
         List<File> secondList = getTempListOfFile(tempDir, 3 , false);
-
+        List<FileDifference> listOfDifferences = differenceInXmlFilesReader.getListOfDifferences(firstList, secondList);
+        assertEquals(3, listOfDifferences.size(), "Should return 3 FileDifference");
+        assertEquals(false, listOfDifferences.isEmpty(), "Should not empty");
     }
 
     private List<File> getTempListOfFile(Path tempDir, int numberOfFiles, boolean numberBeforeText) throws IOException {
         List<File> tempListOfFile = new ArrayList<>();
         int intRandom = ThreadLocalRandom.current().nextInt(1, 10);
+        Path Directory = Files.createDirectory(tempDir.resolve(String.valueOf(intRandom)));
         for (int i = 0; i < numberOfFiles; i++) {
             String nameFile = intRandom + "/" + "text" + i + ".txt";
             Path txtFile = Files.createFile(tempDir.resolve(nameFile));

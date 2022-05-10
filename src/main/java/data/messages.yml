@@ -3,28 +3,32 @@ welcome-message: |+
   1. Copy File
   2. Check if file is XML File
   3. Compare File
+  4. Extractor Macro from File
 bad-choose: Bad choice! You can only choose 1 or 2
-please-enter-the-path: Please enter the path to a file or directory
-please-enter-the-path-to-file: Please enter the path to file
-please-enter-destination-path: Please enter the destination directory
-wrong-path: Wrong path to file or directory
-wrong-directory: Wrong directory
+please-enter-the-path: Please enter the path to a file or directory.
+please-enter-the-path-to-file: Please enter the path to file.
+please-enter-destination-path: Please enter the destination directory.
+wrong-path: Wrong path to file or directory.
+wrong-directory: Wrong directory!
 wrong-path-to-file: Path to file not exist!
 added-file: >
   File Added:
-wrong-extension: Failed to add the file. Incorrect file extension
+wrong-extension: Failed to add the file! Incorrect file extension.
 reader-error: An error occurred with the keyboard input
 continue: |+
   Do you want to continue?
   N. NEXT - Enter N letter to add another file / directory
-  E. EXIT - Enter E char to finish adding files.
+  E. EXIT - Enter E char to finish adding files
 bad-choose-letter: Bad choice! You can only choose N or E
-problem-with-copy-file: There was a problem copying files
+problem-with-copy-file: There was a problem copying files.
 files-copied: Files copied!
 files-not-copied: The files were not copied!
-file-is-based-on-xml: The file is based on xml format
-file-is-not-based-on-xml: The file is not based on xml format
-add-first-file: You add the first file to be compared
-add-second-file: You add the second file to be compared
-compare-file-should-the-same-extension: Compare files should have the same extension
+file-is-based-on-xml: The file is based on xml format.
+file-is-not-based-on-xml: The file is not based on xml format.
+add-first-file: You add the first file to be compared.
+add-second-file: You add the second file to be compared.
+compare-file-should-the-same-extension: Compare files should have the same extension.
 compare-success: Compare files success!
+you-can-extract-macro-from-docx-xlsx: You can extract macro only form .docm and .xlsm file. Try again.
+file-doest-contain-marco: File doest contain macro.
+macro-has-been-extracted: Macro has been extracted form file.

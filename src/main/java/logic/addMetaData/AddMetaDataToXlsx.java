@@ -1,10 +1,10 @@
-package logic;
+package logic.addMetaData;
 
 import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 
-public class AddMetaDataToXlsx implements MetaDataAddable{
+public class AddMetaDataToXlsx implements MetaDataAddable {
     @Override
     public boolean addKeywordToMetaData(File file, String hash) {
         try {

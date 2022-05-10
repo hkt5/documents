@@ -1,10 +1,10 @@
-package logic;
+package logic.addMetaData;
 
 import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.io.*;
 
-public class AddMetaDataToDocx implements MetaDataAddable{
+public class AddMetaDataToDocx implements MetaDataAddable {
     @Override
     public boolean addKeywordToMetaData(File file, String hash) {
         try {

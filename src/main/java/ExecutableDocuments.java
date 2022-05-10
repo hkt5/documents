@@ -11,6 +11,7 @@ public class ExecutableDocuments {
     private static final int USER_OPTION_IS_COPY_FILE = 1;
     private static final int USER_OPTION_IS_READ_FILE = 2;
     private static final int USER_OPTION_IS_COMPARE_FILE = 3;
+    private static final int USER_OPTION_IS_MACRO_EXTRACTOR = 4;
     private UserInterfaceController userInterfaceController;
     private ProgramArgumentsController programArgumentsController;
     private UserOptions userOptions;
@@ -44,10 +45,12 @@ public class ExecutableDocuments {
             fileStrategy = new ReadFile();
         } else if (userOptions.getStrategy() == USER_OPTION_IS_COMPARE_FILE) {
             fileStrategy = new CompareFile();
+        } else if (userOptions.getStrategy() == USER_OPTION_IS_MACRO_EXTRACTOR) {
+            fileStrategy = new MacroExtractor();
         }
         // for test
         ResultData resultData = fileStrategy.perform();
         userInterface.getMessage(resultData.getResultMassage());
-        if (!resultData.getResultData().isEmpty()) userInterface.getMessage(resultData.getResultData());
+        if (resultData.getResultData() != null) userInterface.getMessage(resultData.getResultData());
     }
 }

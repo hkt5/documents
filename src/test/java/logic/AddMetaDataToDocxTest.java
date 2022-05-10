@@ -1,5 +1,6 @@
 package logic;
 
+import logic.addMetaData.AddMetaDataToDocx;
 import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;

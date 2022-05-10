@@ -1,6 +1,10 @@
 package logic;
 
 import data.ResultData;
+import logic.addMetaData.AddMetaDataToDocx;
+import logic.addMetaData.AddMetaDataToPDF;
+import logic.addMetaData.AddMetaDataToXlsx;
+import logic.addMetaData.MetaDataAddable;
 import org.apache.commons.io.FileUtils;
 import ui.MessageReturnable;
 import ui.ReturnUserInterface;

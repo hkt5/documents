@@ -37,12 +37,14 @@ public class MacroExtractor implements FileStrategy{
             VBAMacroExtractor vbaMacroExtractor = new VBAMacroExtractor();
             vbaMacroExtractor.extract(fileToExtractor, new File(fileToExtractor.getAbsoluteFile().getParent()));
             resultData.setResultMassage("macro-has-been-extracted");
+            return resultData;
         } catch (IllegalArgumentException illegalArgumentException) {
             resultData.setResultMassage("file-doest-contain-marco");
+            return resultData;
         } catch (IOException ioException) {
             System.out.println(ioException);
         } finally {
-            return new ResultData();
+            return resultData;
         }
     }
 

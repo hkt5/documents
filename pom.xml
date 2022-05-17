@@ -10,7 +10,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
     <packaging>jar</packaging>
 
     <version>1.0-SNAPSHOT</version>
-    <name>SilenceOntheWire Documents</name>
+    <name>SilenceOnTheWire Documents</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -116,6 +116,9 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
             </plugin>
 
             <!-- Make this jar executable -->
@@ -136,6 +139,19 @@ http://maven.apache.org/maven-v4_0_0.xsd">
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

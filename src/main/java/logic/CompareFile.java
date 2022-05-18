@@ -33,6 +33,7 @@ public class CompareFile implements FileStrategy {
     private UnzipFileToDirectoryable unzipFileToDirectoryable;
     private File sourceFile;
     private File fileToCompare;
+    private boolean isRunInConsole;
 
     public CompareFile(){
         this.messageble = new UserInterface();
@@ -40,15 +41,15 @@ public class CompareFile implements FileStrategy {
         this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
         unzipFileToDirectoryable = new UnzipFileToDirectoryController();
         getFilesFromUser();
+        isRunInConsole = true;
     }
 
     public CompareFile(File sourceFile, File fileToCompare) {
-        this.messageble = new UserInterface();
-        this.keyboardReader = new KeyboardReader(new BufferedReader(new InputStreamReader(System.in)));
-        this.userInterfaceController = new UserInterfaceController(new GetFileFromConsole());
         unzipFileToDirectoryable = new UnzipFileToDirectoryController();
         this.sourceFile = sourceFile;
         this.fileToCompare = fileToCompare;
+        isRunInConsole = false;
+
     }
 
     @Override
